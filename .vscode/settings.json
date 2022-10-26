@@ -1,0 +1,14 @@
+{
+    "deno.enable": true,
+    "eslint.enable": false,
+    "deno.lint": true,
+    "editor.formatOnSave": true,
+    // "cSpell.words": [
+    //     "kysely",
+    //     "preact",
+    //     "twind"
+    // ],
+    "editor.quickSuggestions": {
+        "strings": "on"
+    }
+}
