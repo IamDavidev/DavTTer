@@ -1,0 +1,9 @@
+{
+    "imports": {
+        "@domain": "./src/domain/",
+        "@application": "./src/application/",
+        "@infrastructure": "./src/infrastructure/",
+        "~": "./src/",
+        "$oak": "https://deno.land/x/oak/mod.ts"
+    }
+}

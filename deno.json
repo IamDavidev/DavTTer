@@ -1,0 +1,17 @@
+{
+    "compilerOptions": {},
+    "task": {
+        "run::server": "",
+        "run::tst": "",
+        "up::db": "",
+        "down::db": ""
+    },
+    "fmt": {
+        "options": {
+            "singleQuote": true,
+            "useTabs": true,
+            "indentWidth": 4,
+            "proseWrap": "always"
+        }
+    }
+}
