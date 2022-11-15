@@ -10,7 +10,7 @@ export default class UserModel {
    * @param tagName Tag Unique identifier
    * @param bio  User bio
    * @param profileImage User profile image URL
-   * @praam numberPublications Number of publications of the user
+   * @param numberPublications Number of publications of the user
    * @param publication Publications array
    *
    */
