@@ -1,4 +1,4 @@
-import { EImageFormat } from '../interfaces/imagesFormat.enum.ts';
+import { EImageFormat } from '@domain/interfaces/imagesFormat.enum.ts';
 
 /**
  * Format Image Allowed

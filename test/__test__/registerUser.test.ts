@@ -5,10 +5,10 @@ import {
 } from 'https://deno.land/std@0.136.0/testing/asserts.ts';
 
 import UserModel from '@domain/models/user.model.ts';
-import {
-  BASE_URL,
-  REGISTER_USER_ENDPOINT,
-} from '@shared/constants/enpoitns.const.ts';
+// import {
+//   BASE_URL,
+//   REGISTER_USER_ENDPOINT,
+// } from '@shared/constants/enpoitns.const.ts';
 
 import { MethodsRequest } from '../interfaces/methods.enum.ts';
 
@@ -43,6 +43,12 @@ export async function requestEnpointRegisterUser(
 
   return res;
 }
+export function failedStatus(
+  statusExpected: number,
+  statusRequest: number
+): string {
+  return `Expected status code: ${statusExpected},but received:${statusRequest} `;
+}
 
 it('[Register-Succesfully] Should be create a user in bd', async () => {
   const EXPECTED_STATUS = 201; // Created
@@ -50,7 +56,8 @@ it('[Register-Succesfully] Should be create a user in bd', async () => {
     const res = await requestEnpointRegisterUser(SUCESS_USER);
     assertEquals(res.status, EXPECTED_STATUS, 'user not created');
     fail(
-      `Expected status code: ${EXPECTED_STATUS},but received:${res.status} `
+      // `Expected status code: ${EXPECTED_STATUS},but received:${res.status} `
+      failedStatus(EXPECTED_STATUS, res.status)
     );
   } catch (err) {
     console.log('Error User Register: ', err);
@@ -64,9 +71,7 @@ it('{ Invalid Id } - [ Register Failded ]', async () => {
     const userInvalid = { ...SUCESS_USER, id: InvalidID };
     const res = await requestEnpointRegisterUser(userInvalid);
     assertEquals(res.status, EXPECTED_STATUS, 'user not created');
-    fail(
-      `Expected status code: ${EXPECTED_STATUS},but received:${res.status} `
-    );
+    fail(failedStatus(EXPECTED_STATUS, res.status));
   } catch (err) {
     fail(err);
   }
@@ -78,9 +83,7 @@ it('{ Invalid Email } - [ Register Failded ]', async () => {
     const userInvalid = { ...SUCESS_USER, email: InvalidID };
     const res = await requestEnpointRegisterUser(userInvalid);
     assertEquals(res.status, EXPECTED_STATUS, 'user not created');
-    fail(
-      `Expected status code: ${EXPECTED_STATUS},but received:${res.status} `
-    );
+    fail(failedStatus(EXPECTED_STATUS, res.status));
   } catch (err) {
     fail(err);
   }
@@ -92,9 +95,7 @@ it('{ Invalid Password } - [ Register Failded ]', async () => {
     const userInvalid = { ...SUCESS_USER, password: InvalidPassword };
     const res = await requestEnpointRegisterUser(userInvalid);
     assertEquals(res.status, EXPECTED_STATUS, 'user not created');
-    fail(
-      `Expected status code: ${EXPECTED_STATUS},but received:${res.status} `
-    );
+    fail(failedStatus(EXPECTED_STATUS, res.status));
   } catch (err) {
     fail(err);
   }
@@ -106,13 +107,12 @@ it('{ Invalid TagName } - [ Register Failded ]', async () => {
     const userInvalid = { ...SUCESS_USER, tagName: InvalidTagName };
     const res = await requestEnpointRegisterUser(userInvalid);
     assertEquals(res.status, EXPECTED_STATUS, 'user not created');
-    fail(
-      `Expected status code: ${EXPECTED_STATUS},but received:${res.status} `
-    );
+    fail(failedStatus(EXPECTED_STATUS, res.status));
   } catch (err) {
     fail(err);
   }
 });
+
 it('test working [ success ]', () => {
   assertEquals(1, 1);
 });

@@ -1,16 +1,41 @@
-# backlog -> historias de usuario
+# Historias de usuario
 
-- The cat can sign in with a username and password
-- The cat can sign up with a (/domain/models/user.model.ts) <- link to the model
+## Usuario
 
-- The Cat can make match with the other cat
-- The Cat can see the other cat profile
-- The Cat can update the profile
-- The Cat can see the match list
+- id : @unique
 
-## pendings
+  - UUID V4
 
-- chats
-- The Cat can create Publications and elemeted
-- The Cat can see the publications of the other cat
-- comments[publications] (Model or not Model)
+- name: @string @required
+
+  - at least one name and one last name
+  - at least 3 characters
+
+- email: @string @required
+
+  - at least 5 characters
+  - valid email format Standard RFC 5322
+
+- tagName : @string @unique
+
+  - No spaces
+  - No special characters
+  - No numbers
+  - at least 3 characters
+
+- bio : @string
+
+  - at least 50 characters
+  - at most 500 characters
+
+- password : @string @required
+
+  - at least 8 characters
+  - at most 20 characters
+  - at least one number
+  - at least one uppercase letter
+  - at least one lowercase letter
+  - at least one special character
+
+- profilePicture : @string
+  - type valid image (jpg, png, gif, svg)

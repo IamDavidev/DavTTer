@@ -1,5 +1,5 @@
-import PublicationModel from './publication.model.ts';
-
+import PublicationModel from '@domain/models/publication.model.ts';
+// import { v4 } from 'https://deno.land/std@0.164.0/uuid/v4.ts';
 export default class UserModel {
   /**
    *
@@ -16,6 +16,7 @@ export default class UserModel {
    */
   constructor(
     public readonly id: string,
+
     public name: string,
     public email: string,
     public password: string,
@@ -23,8 +24,35 @@ export default class UserModel {
     public bio: string,
     public profileImage: string | null,
     public numberPublications: number,
-    public publication: PublicationModel[]
+    public publication: PublicationModel[] | []
   ) {}
+
+  static validateId(): boolean {
+    return true;
+  }
+
+  static validateEmail(): boolean {
+    return true;
+  }
+
+  static validateName(): boolean {
+    return true;
+  }
+
+  static validatePassword(): boolean {
+    return true;
+  }
+
+  static validateTagName(): boolean {
+    return true;
+  }
+
+  static validateBio(): boolean {
+    return true;
+  }
+  static validateProfileImage(): boolean {
+    return true;
+  }
 
   static createUser(props: UserModel): UserModel {
     return new UserModel(
@@ -35,8 +63,8 @@ export default class UserModel {
       props.tagName,
       props.bio,
       props.profileImage,
-      props.numberPublications,
-      props.publication
+      0,
+      []
     );
   }
 }
