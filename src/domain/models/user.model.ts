@@ -1,4 +1,6 @@
-export class UserModel {
+import PublicationModel from './publication.model.ts';
+
+export default class UserModel {
   /**
    *
    * @param id User unique identifier
@@ -8,9 +10,8 @@ export class UserModel {
    * @param tagName Tag Unique identifier
    * @param bio  User bio
    * @param profileImage User profile image URL
-   * @param likes Number of likes of Images
-   * @param banner User banner image URL
-   * @param images Ids of the images uploaded by the user
+   * @praam numberPublications Number of publications of the user
+   * @param publication Publications array
    *
    */
   constructor(
@@ -21,9 +22,8 @@ export class UserModel {
     public tagName: string,
     public bio: string,
     public profileImage: string | null,
-    public likes: number,
-    public banner: string | null, // private list_of_matches: string[] = []
-    public images: string | null
+    public numberPublications: number,
+    public publication: PublicationModel[]
   ) {}
 
   static createUser(props: UserModel): UserModel {
@@ -35,9 +35,8 @@ export class UserModel {
       props.tagName,
       props.bio,
       props.profileImage,
-      props.likes,
-      props.banner,
-      props.images
+      props.numberPublications,
+      props.publication
     );
   }
 }
