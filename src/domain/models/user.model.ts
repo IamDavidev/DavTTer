@@ -39,7 +39,7 @@ export default class UserModel {
     public email: string,
     public password: string,
     public tagName: string,
-    public bio: string,
+    public bio: string | null,
     public profileImage: string | null,
     public numberPublications: number,
     public publication: PublicationModel[] | []
@@ -106,7 +106,7 @@ export default class UserModel {
     if (!UserModel.validateTagName(props.tagName))
       throw new InvalidTagNameException();
 
-    if (!UserModel.validateBio(props.bio))
+    if (props.bio && !UserModel.validateBio(props?.bio))
       throw new InvalidBioFormatException();
 
     const HAS_SALT_ROUNDS = await genSalt(10);
