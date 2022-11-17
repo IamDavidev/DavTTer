@@ -1,1 +1,5 @@
-models
+.env
+node_modules
+generated 
+package-lock.json
+package.json

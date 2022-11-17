@@ -12,7 +12,7 @@ export default class PublicationModel {
   constructor(
     public readonly id: string,
     public title: string,
-    public description: string,
+    public body: string,
     public image: string,
     public likes: number,
     public user: string
@@ -22,7 +22,7 @@ export default class PublicationModel {
     return new PublicationModel(
       props.id,
       props.title,
-      props.description,
+      props.body,
       props.image,
       props.likes,
       props.user
