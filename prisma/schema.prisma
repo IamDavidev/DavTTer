@@ -10,17 +10,15 @@ datasource db {
 }
 
 model User {
-  id                    String        @id @default(auto()) @map("_id") @db.ObjectId
-  uuid                  String        @unique
-  name                  String
-  email                 String        @unique
-  password              String
-  tagName               String        @unique
-  bio                   String?
-  profileImage          String?
-  numberOfPublications  Int
-  listIdsOfPublications String[]
-  Publications          Publication[]
+  id                   String   @id @default(auto()) @map("_id") @db.ObjectId
+  name                 String
+  email                String   @unique
+  password             String
+  tagName              String   @unique
+  bio                  String?
+  profileImage         String?
+  numberOfPublications Int      @default(0)
+  publications         String[] @default([])
 }
 
 model Publication {
@@ -29,6 +27,5 @@ model Publication {
   body   String
   image  String
   likes  Int    @default(0)
-  user   User   @relation(fields: [userId], references: [id])
-  userId String
+  userId String @db.ObjectId
 }
