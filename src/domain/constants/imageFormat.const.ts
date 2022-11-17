@@ -5,13 +5,13 @@ import { EImageFormat } from '@domain/interfaces/imagesFormat.enum.ts';
  */
 
 export const ImageFormat: {
-  PNG: EImageFormat.PNG;
-  JPG: EImageFormat.JPG;
-  JPEG: EImageFormat.JPEG;
-  GIF: EImageFormat.GIF;
+	PNG: EImageFormat.PNG;
+	JPG: EImageFormat.JPG;
+	JPEG: EImageFormat.JPEG;
+	GIF: EImageFormat.GIF;
 } = {
-  PNG: EImageFormat.PNG,
-  JPG: EImageFormat.JPG,
-  JPEG: EImageFormat.JPEG,
-  GIF: EImageFormat.GIF,
+	PNG: EImageFormat.PNG,
+	JPG: EImageFormat.JPG,
+	JPEG: EImageFormat.JPEG,
+	GIF: EImageFormat.GIF,
 };

@@ -1,12 +1,12 @@
 {
-    "imports": {
-        "@domain/": "./src/domain/",
-        "@application/": "./src/application/",
-        "@infrastructure/": "./src/infrastructure/",
-        "@shared/": "./src/shared/",
-        "$oak/": "https://deno.land/x/oak/",
-        "@prisma/": "./generated/client/deno/",
-        "$testing/": "https://deno.land/std@0.161.0/testing/",
-        "$uuid": "https://deno.land/std@0.164.0/uuid"
-    }
+	"imports": {
+		"@domain/": "./src/domain/",
+		"@application/": "./src/application/",
+		"@infrastructure/": "./src/infrastructure/",
+		"@shared/": "./src/shared/",
+		"$oak/": "https://deno.land/x/oak/",
+		"@prisma/": "./generated/client/deno/",
+		"$testing/": "https://deno.land/std@0.161.0/testing/",
+		"$uuid": "https://deno.land/std@0.164.0/uuid"
+	}
 }

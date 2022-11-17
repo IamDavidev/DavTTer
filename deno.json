@@ -1,17 +1,16 @@
 {
-    "compilerOptions": {},
-    "tasks": {
-        "run::server": "",
-        "run::tst": "deno test -A --allow-env --allow-net --watch --config deno.json --unstable --import-map import_map.json  --trace-ops test/__test__/",
-        "up::db": "",
-        "down::db": ""
-    },
-    "fmt": {
-        "options": {
-            "singleQuote": true,
-            "useTabs": true,
-            "indentWidth": 2,
-            "proseWrap": "always"
-        }
-    }
+	"compilerOptions": {},
+	"tasks": {
+		"run::server": "",
+		"run::tst": "deno test -A --allow-env --allow-net --watch --config deno.json --unstable --import-map import_map.json  --trace-ops test/__test__/",
+		"up::db": "",
+		"down::db": ""
+	},
+	"fmt": {
+		"options": {
+			"singleQuote": true,
+			"useTabs": true,
+			"indentWidth": 4
+		}
+	}
 }

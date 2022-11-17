@@ -1,5 +1,5 @@
 import { validate as validateId } from 'https://deno.land/std@0.164.0/uuid/v4.ts';
-import { hash, genSalt } from 'https://deno.land/x/bcrypt@v0.4.1/mod.ts';
+import { genSalt, hash } from 'https://deno.land/x/bcrypt@v0.4.1/mod.ts';
 
 import PublicationModel from '@domain/models/publication.model.ts';
 import {
@@ -20,7 +20,6 @@ export const HAS_SALT_ROUNDS = genSalt(10);
 
 export default class UserModel {
   /**
-   *
    * @param id User unique identifier
    * @param name Name of the user
    * @param email email of the user
@@ -30,7 +29,6 @@ export default class UserModel {
    * @param profileImage User profile image URL
    * @param numberPublications Number of publications of the user
    * @param publications Publications array
-   *
    */
 
   constructor(
@@ -92,22 +90,29 @@ export default class UserModel {
   }
 
   static async createUser(props: UserModel): Promise<UserModel> {
-    if (!UserModel.validateId(props.id)) throw new InvalidIdFormatException();
+    if (!UserModel.validateId(props.id)) {
+      throw new InvalidIdFormatException();
+    }
 
-    if (!UserModel.validateEmail(props.email))
+    if (!UserModel.validateEmail(props.email)) {
       throw new InvalidEmailFormatException();
+    }
 
-    if (!UserModel.validateName(props.name))
+    if (!UserModel.validateName(props.name)) {
       throw new InvalidNameFormatException();
+    }
 
-    if (!UserModel.validatePassword(props.password))
+    if (!UserModel.validatePassword(props.password)) {
       throw new InvalidPasswordFormatException();
+    }
 
-    if (!UserModel.validateTagName(props.tagName))
+    if (!UserModel.validateTagName(props.tagName)) {
       throw new InvalidTagNameException();
+    }
 
-    if (props.bio && !UserModel.validateBio(props?.bio))
+    if (props.bio && !UserModel.validateBio(props?.bio)) {
       throw new InvalidBioFormatException();
+    }
 
     const HAS_SALT_ROUNDS = await genSalt(10);
     const hashedsPassword = await hash(props.password, HAS_SALT_ROUNDS);
