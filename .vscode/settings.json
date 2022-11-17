@@ -1,6 +1,6 @@
 {
     "deno.enable": true,
-    "eslint.enable": false,
+    "eslint.enable": true,
     "deno.lint": true,
     "editor.formatOnSave": true,
     "editor.quickSuggestions": {

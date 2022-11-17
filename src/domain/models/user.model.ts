@@ -29,7 +29,7 @@ export default class UserModel {
    * @param bio  User bio
    * @param profileImage User profile image URL
    * @param numberPublications Number of publications of the user
-   * @param publication Publications array
+   * @param publications Publications array
    *
    */
 
@@ -42,7 +42,7 @@ export default class UserModel {
     public bio: string | null,
     public profileImage: string | null,
     public numberPublications: number,
-    public publication: PublicationModel[] | []
+    public publications: string[] | []
   ) {}
 
   static validateId(uuid: string): boolean {

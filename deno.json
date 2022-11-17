@@ -10,7 +10,7 @@
         "options": {
             "singleQuote": true,
             "useTabs": true,
-            "indentWidth": 4,
+            "indentWidth": 2,
             "proseWrap": "always"
         }
     }

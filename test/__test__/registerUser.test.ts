@@ -1,4 +1,4 @@
-import { beforeAll, describe, it } from '$testing/bdd.ts';
+import { it } from '$testing/bdd.ts';
 import {
   assertEquals,
   fail,
@@ -21,7 +21,7 @@ export const SUCESS_USER: UserModel = {
   bio: 'I am David',
   profileImage: 'https://www.google.com',
   numberPublications: 0,
-  publication: [],
+  publications: [],
 };
 export const InvalidID = 'si vale?';
 export const InvalidEmail = 'email@invalid';
