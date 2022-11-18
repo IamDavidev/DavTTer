@@ -113,6 +113,18 @@ export default class UserRepository {
 			},
 		});
 	}
-	public async findUserByTagName(_tagName: string): Promise<void> {}
-	public async findUserByEmail(_email: string): Promise<void> {}
+	public async findUserByTagName(tagName: string): Promise<void> {
+		await this._orm.user.findUnique({
+			where: {
+				tagName,
+			},
+		});
+	}
+	public async findUserByEmail(email: string): Promise<void> {
+		await this._orm.user.findUnique({
+			where: {
+				email,
+			},
+		});
+	}
 }
