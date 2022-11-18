@@ -1,8 +1,8 @@
 {
-    "useTabs": true,
     "singleQuote": true,
     "jsxSingleQuote": true,
     "bracketSpacing": true,
     "bracketSameLine": true,
-    "arrowParens": "avoid"
+    "arrowParens": "avoid",
+    "tabWidth": 4
 }
