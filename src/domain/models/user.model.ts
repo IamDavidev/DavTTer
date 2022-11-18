@@ -39,7 +39,7 @@ export default class UserModel {
 		public tagName: string,
 		public bio: string | null,
 		public profileImage: string | null,
-		public numberPublications: number,
+		public numberOfPublications: number,
 		public publications: string[] | []
 	) {}
 
