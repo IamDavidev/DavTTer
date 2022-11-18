@@ -1,31 +1,35 @@
-import { type PrismaClient, type User } from '@prisma/index.d.ts';
+import { prisma } from '@infrastructure/clients/prisma.client.ts';
 
 import UserModel from '@domain/models/user.model.ts';
+import { type PrismaClient, type User } from '@prisma/index.d.ts';
+import { type FindUserByCriteria } from '@infrastructure/interfaces/FindUserByCriteria.type.ts';
 
-type UserOrmPrisma = User | null;
+// type FindUserModel = UserModel | null;
 
 export default class UserRepository {
 	private _orm: PrismaClient;
 
-	constructor(orm: PrismaClient) {
-		this._orm = orm;
+	constructor() {
+		this._orm = prisma;
 	}
 
 	protected adapterUserToDomain(ormUser: User): UserModel {
 		/**
-     *
-        constructor(
-          public readonly id: string,
-          public name: string,
-          public email: string,
-          public password: string,
-          public tagName: string,
-          public bio: string,
-          public profileImage: string | null,
-          public numberPublications: number,
-          public publication: PublicationModel[] | []
-        ) {}
-     */
+		 
+			constructor(
+			public readonly id: string,
+			public name: string,
+			public email: string,
+			public password: string,
+			public tagName: string,
+			public bio: string,
+			public profileImage: string | null,
+			public numberPublications: number,
+			public publication: PublicationModel[] | []
+			) {}
+
+     	*/
+
 		const {
 			id,
 			name,
@@ -56,7 +60,7 @@ export default class UserRepository {
 			bio,
 			email,
 			name,
-			numberPublications,
+			numberOfPublications,
 			password,
 			profileImage,
 			publications,
@@ -67,7 +71,7 @@ export default class UserRepository {
 			bio: bio ? bio : '',
 			email,
 			name,
-			numberOfPublications: numberPublications,
+			numberOfPublications,
 			password,
 			profileImage: profileImage ? profileImage : '',
 			tagName,
@@ -76,7 +80,11 @@ export default class UserRepository {
 		};
 	}
 
-	public async findUserById(userId: string): Promise<UserModel | null> {
+	public async findUserById({
+		userId,
+	}: {
+		userId: string;
+	}): FindUserByCriteria {
 		const userFound = await this._orm.user.findUnique({
 			where: {
 				id: userId,
@@ -86,13 +94,14 @@ export default class UserRepository {
 
 		return this.adapterUserToDomain(userFound);
 	}
-	public async createUser(user: UserModel): Promise<void> {
+
+	public async createUser({ user }: { user: UserModel }): Promise<void> {
 		const {
 			id,
 			bio,
 			email,
 			name,
-			numberPublications,
+			numberOfPublications,
 			password,
 			profileImage,
 			publications,
@@ -104,7 +113,7 @@ export default class UserRepository {
 				bio: bio ? bio : '',
 				email,
 				name,
-				numberOfPublications: numberPublications,
+				numberOfPublications,
 				password,
 				profileImage: profileImage ? profileImage : '',
 				tagName,
@@ -113,18 +122,35 @@ export default class UserRepository {
 			},
 		});
 	}
-	public async findUserByTagName(tagName: string): Promise<void> {
-		await this._orm.user.findUnique({
+
+	public async findUserByTagName({
+		tagName,
+	}: {
+		tagName: string;
+	}): FindUserByCriteria {
+		const userFound = await this._orm.user.findUnique({
 			where: {
 				tagName,
 			},
 		});
+
+		if (!userFound) return null;
+
+		return this.adapterUserToDomain(userFound);
 	}
-	public async findUserByEmail(email: string): Promise<void> {
-		await this._orm.user.findUnique({
+
+	public async findUserByEmail({
+		email,
+	}: {
+		email: string;
+	}): FindUserByCriteria {
+		const userFound = await this._orm.user.findUnique({
 			where: {
 				email,
 			},
 		});
+		if (!userFound) return null;
+
+		return this.adapterUserToDomain(userFound);
 	}
 }
