@@ -10,7 +10,7 @@
 		"options": {
 			"singleQuote": true,
 			"useTabs": true,
-			"indentWidth": 2
+			"indentWidth": 4
 		}
 	}
 }

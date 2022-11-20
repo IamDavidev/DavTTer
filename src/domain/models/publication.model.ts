@@ -13,7 +13,7 @@ export default class PublicationModel {
 		public body: string,
 		public image: string,
 		public likes: number,
-		public user: string,
+		public user: string
 	) {}
 
 	static createPublication(props: PublicationModel): PublicationModel {
@@ -23,7 +23,7 @@ export default class PublicationModel {
 			props.body,
 			props.image,
 			props.likes,
-			props.user,
+			props.user
 		);
 	}
 }
