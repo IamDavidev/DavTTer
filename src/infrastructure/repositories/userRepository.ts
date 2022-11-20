@@ -3,6 +3,7 @@ import { prisma } from '@infrastructure/clients/prisma.client.ts';
 import UserModel from '@domain/models/user.model.ts';
 import { type PrismaClient, type User } from '@prisma/index.d.ts';
 import { type FindUserByCriteria } from '@infrastructure/interfaces/FindUserByCriteria.type.ts';
+import { UserRegister } from '../../application/use-cases/registerUser.use_case.ts';
 
 // type FindUserModel = UserModel | null;
 
@@ -54,9 +55,9 @@ export default class UserRepository {
 		);
 	}
 
-	protected adapterToOrm(userDomain: UserModel): User {
+	protected adapterToOrm(userDomain: UserModel): UserRegister {
 		const {
-			id,
+			uuid,
 			bio,
 			email,
 			name,
@@ -75,19 +76,19 @@ export default class UserRepository {
 			password,
 			profileImage: profileImage ? profileImage : '',
 			tagName,
-			id,
+			uuid,
 			publications,
 		};
 	}
 
-	public async findUserById({
-		userId,
+	public async findUserByUUId({
+		userUUId,
 	}: {
-		userId: string;
+		userUUId: string;
 	}): FindUserByCriteria {
 		const userFound = await this._orm.user.findUnique({
 			where: {
-				id: userId,
+				uuid: userUUId,
 			},
 		});
 		if (!userFound) return null;
@@ -97,7 +98,7 @@ export default class UserRepository {
 
 	public async createUser({ user }: { user: UserModel }): Promise<void> {
 		const {
-			id,
+			uuid,
 			bio,
 			email,
 			name,
@@ -108,7 +109,7 @@ export default class UserRepository {
 			tagName,
 		} = user;
 
-		await this._orm.user.create({
+		const log = await this._orm.user.create({
 			data: {
 				bio: bio ? bio : '',
 				email,
@@ -117,10 +118,11 @@ export default class UserRepository {
 				password,
 				profileImage: profileImage ? profileImage : '',
 				tagName,
-				id,
+				uuid,
 				publications,
 			},
 		});
+		console.log(log);
 	}
 
 	public async findUserByTagName({

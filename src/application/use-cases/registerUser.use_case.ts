@@ -6,23 +6,70 @@ import { UserTagNameIsAlreadyInUseException } from '@application/errors/userTagN
 
 import UserRepository from '@infrastructure/repositories/userRepository.ts';
 
-import { type User } from '@prisma/index.d.ts';
+export interface UserRegister {
+	uuid: string;
+	bio: string;
+	email: string;
+	name: string;
+	numberOfPublications: number;
+	password: string;
+	profileImage: string | null;
+	publications: string[] | [];
+	tagName: string;
+}
 
-export async function UserRegisterUseCase({
+export async function userRegisterUseCase({
 	bio,
 	email,
 	name,
 	password,
 	profileImage,
 	tagName,
-	id,
+	uuid,
 	numberOfPublications,
 	publications,
-}: User): Promise<void> {
+}: UserRegister): Promise<void> {
+	console.info(
+		'🚀 ~>  file: registerUser.use_case.ts ~>  line 32 ~>  publications',
+		publications
+	);
+	console.info(
+		'🚀 ~>  file: registerUser.use_case.ts ~>  line 32 ~>  numberOfPublications',
+		numberOfPublications
+	);
+	console.info(
+		'🚀 ~>  file: registerUser.use_case.ts ~>  line 32 ~>  uuid',
+		uuid
+	);
+	console.info(
+		'🚀 ~>  file: registerUser.use_case.ts ~>  line 32 ~>  tagName',
+		tagName
+	);
+	console.info(
+		'🚀 ~>  file: registerUser.use_case.ts ~>  line 32 ~>  profileImage',
+		profileImage
+	);
+	console.info(
+		'🚀 ~>  file: registerUser.use_case.ts ~>  line 32 ~>  password',
+		password
+	);
+	console.info(
+		'🚀 ~>  file: registerUser.use_case.ts ~>  line 32 ~>  name',
+		name
+	);
+	console.info(
+		'🚀 ~>  file: registerUser.use_case.ts ~>  line 32 ~>  email',
+		email
+	);
+	console.info(
+		'🚀 ~>  file: registerUser.use_case.ts ~>  line 32 ~>  bio',
+		bio
+	);
+	console.log('userRegisterUseCase');
 	const newUser = await UserModel.createUser({
 		bio,
 		email,
-		id,
+		uuid,
 		name,
 		password,
 		numberOfPublications,
@@ -32,8 +79,8 @@ export async function UserRegisterUseCase({
 	});
 	const userRepository = new UserRepository();
 
-	const existUserById = await userRepository.findUserById({
-		userId: newUser.id,
+	const existUserById = await userRepository.findUserByUUId({
+		userUUId: newUser.uuid,
 	});
 	if (existUserById) throw new UserIdIsAlreadyInUseException();
 
