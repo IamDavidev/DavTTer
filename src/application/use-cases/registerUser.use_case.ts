@@ -29,43 +29,6 @@ export async function userRegisterUseCase({
 	numberOfPublications,
 	publications,
 }: UserRegister): Promise<void> {
-	console.info(
-		'🚀 ~>  file: registerUser.use_case.ts ~>  line 32 ~>  publications',
-		publications
-	);
-	console.info(
-		'🚀 ~>  file: registerUser.use_case.ts ~>  line 32 ~>  numberOfPublications',
-		numberOfPublications
-	);
-	console.info(
-		'🚀 ~>  file: registerUser.use_case.ts ~>  line 32 ~>  uuid',
-		uuid
-	);
-	console.info(
-		'🚀 ~>  file: registerUser.use_case.ts ~>  line 32 ~>  tagName',
-		tagName
-	);
-	console.info(
-		'🚀 ~>  file: registerUser.use_case.ts ~>  line 32 ~>  profileImage',
-		profileImage
-	);
-	console.info(
-		'🚀 ~>  file: registerUser.use_case.ts ~>  line 32 ~>  password',
-		password
-	);
-	console.info(
-		'🚀 ~>  file: registerUser.use_case.ts ~>  line 32 ~>  name',
-		name
-	);
-	console.info(
-		'🚀 ~>  file: registerUser.use_case.ts ~>  line 32 ~>  email',
-		email
-	);
-	console.info(
-		'🚀 ~>  file: registerUser.use_case.ts ~>  line 32 ~>  bio',
-		bio
-	);
-	console.log('userRegisterUseCase');
 	const newUser = await UserModel.createUser({
 		bio,
 		email,
@@ -93,4 +56,6 @@ export async function userRegisterUseCase({
 		tagName: newUser.tagName,
 	});
 	if (existUserByTagName) throw new UserTagNameIsAlreadyInUseException();
+
+	await userRepository.createUser({ user: newUser });
 }

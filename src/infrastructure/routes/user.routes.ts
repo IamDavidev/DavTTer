@@ -16,5 +16,3 @@ router
 		const users = ['user1', 'user2', 'user3'];
 		response.body = users;
 	});
-
-console.log('users rounded');

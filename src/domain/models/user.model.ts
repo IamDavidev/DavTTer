@@ -88,10 +88,8 @@ export default class UserModel {
 		if (!UserModel.validateUUid(props.uuid))
 			throw new InvalidIdFormatException();
 
-		if (!UserModel.validateEmail(props.email)) {
-			console.log(props.email);
+		if (!UserModel.validateEmail(props.email))
 			throw new InvalidEmailFormatException();
-		}
 
 		if (!UserModel.validateName(props.name))
 			throw new InvalidNameFormatException();

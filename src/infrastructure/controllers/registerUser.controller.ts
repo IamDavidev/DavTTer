@@ -7,7 +7,6 @@ export async function registerUserController({
 	request,
 	response,
 }: RouterContext<RegisterUserRequest>) {
-	console.log('registerUserController');
 	const { uuid, bio, email, name, password, profileImage, tagName } =
 		await request.body({
 			type: 'json',
