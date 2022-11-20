@@ -122,7 +122,6 @@ export default class UserRepository {
 				publications,
 			},
 		});
-		console.log(log);
 	}
 
 	public async findUserByTagName({

@@ -1,18 +1,22 @@
-import { Context, isHttpError } from '$oak/mod.ts';
+import { Context } from '$oak/mod.ts';
 import { DomainFormatException } from '@domain/errors/domainFormat.exception.ts';
 
 import { ApplicationConflictExpception } from '@application/errors/applicationConflict.exception.ts';
+import Logger from 'https://deno.land/x/logger@v1.0.2/logger.ts';
 
 export async function errorMiddleware(
 	ctx: Context,
 	next: () => Promise<unknown>
 ) {
+	console.log('errorMiddleware');
 	try {
 		await next();
 	} catch (err) {
-		if (!isHttpError(err)) return ctx.throw(500, err.message);
+		const logger: Logger = new Logger();
+
 		// handler error of domain
 		if (err instanceof DomainFormatException) {
+			logger.error('DomainFormatException');
 			ctx.response.status = 400;
 			return (ctx.response.body = {
 				message: err.message,
@@ -20,6 +24,7 @@ export async function errorMiddleware(
 		}
 		// handler error of infrastructure
 		if (err instanceof ApplicationConflictExpception) {
+			logger.error('ApplicationConflictExpception');
 			ctx.response.status = 409;
 			return (ctx.response.body = {
 				message: err.message,

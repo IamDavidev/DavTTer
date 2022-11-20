@@ -1,11 +1,8 @@
-import '../../src/app.ts';
 import { it } from '$testing/bdd.ts';
 import {
 	assertEquals,
 	fail,
 } from 'https://deno.land/std@0.136.0/testing/asserts.ts';
-
-import UserModel from '@domain/models/user.model.ts';
 
 import { MethodsRequest } from '../interfaces/methods.enum.ts';
 
@@ -13,9 +10,18 @@ import {
 	BASE_URL,
 	REGISTER_USER_ENDPOINT,
 } from '@shared/constants/enpoitns.const.ts';
-console.log('Enpoint To Fetch', BASE_URL + REGISTER_USER_ENDPOINT);
 
-export const SUCESS_USER: UserModel = {
+export interface UserToRegister {
+	uuid: string;
+	bio: string;
+	email: string;
+	name: string;
+	password: string;
+	profileImage: string | null;
+	tagName: string;
+}
+
+export const SUCESS_USER: UserToRegister = {
 	uuid: 'cf99fb0f-aa38-4d92-a961-aec91cdf1d55',
 	name: 'John Doe',
 	email: 'David@david.com',
@@ -23,8 +29,6 @@ export const SUCESS_USER: UserModel = {
 	tagName: 'IamDavid',
 	bio: 'I am David, and I am a developer with 5 years of experience in the languages go, python, javascript, typescript, and c++, but right now I am learning deno, and recently I have been working with react, and react native',
 	profileImage: 'https://www.google.com',
-	numberOfPublications: 0,
-	publications: [],
 };
 export const InvalidID = 'si vale?';
 export const InvalidEmail = 'email@invalid';
@@ -32,7 +36,8 @@ export const InvalidPassword = '1234';
 export const InvalidTagName = '1234 1234';
 
 export async function requestEnpointRegisterUser(
-	user: UserModel
+	user: UserToRegister,
+	abortController: AbortController
 ): Promise<Response> {
 	const url = `${BASE_URL}${REGISTER_USER_ENDPOINT}`;
 
@@ -42,8 +47,9 @@ export async function requestEnpointRegisterUser(
 		headers: {
 			'Content-Type': 'application/json',
 		},
+		signal: abortController.signal,
 	});
-
+	await res.text();
 	return res;
 }
 export function failedStatus(
@@ -55,81 +61,76 @@ export function failedStatus(
 
 it('[Register-Succesfully] Should be create a user in bd', async () => {
 	const EXPECTED_STATUS = 201; // Created
+	const abortController = new AbortController();
 	try {
-		const res = await requestEnpointRegisterUser(SUCESS_USER);
+		const res = await requestEnpointRegisterUser(SUCESS_USER, abortController);
+		assertEquals(
+			res.status,
+			EXPECTED_STATUS,
+			failedStatus(EXPECTED_STATUS, res.status)
+		);
+	} catch (err) {
+		abortController.abort();
+		fail(failedStatus(EXPECTED_STATUS, err.code));
+	}
+});
+
+it('{ Invalid Id } - [ Register Failded ]', async () => {
+	const abortController = new AbortController();
+	const EXPECTED_STATUS = 400; // Bad Request for invalid id
+	try {
+		const userInvalidId = { ...SUCESS_USER, uuid: InvalidID };
+
+		const res = await requestEnpointRegisterUser(
+			userInvalidId,
+			abortController
+		);
 
 		assertEquals(
 			res.status,
 			EXPECTED_STATUS,
 			failedStatus(EXPECTED_STATUS, res.status)
 		);
-	} catch (_err) {
-		console.log('Error User Register ');
+	} catch (err) {
+		abortController.abort();
+		fail(failedStatus(EXPECTED_STATUS, err.code));
 	}
 });
 
-// it('{ Invalid Id } - [ Register Failded ]', async () => {
-// 	const EXPECTED_STATUS = 409; // Conflict
-// 	try {
-// 		const userInvalid = { ...SUCESS_USER, uuid: InvalidID };
+it('{ Invalid Email } - [ Register Failded ]', async () => {
+	const abortController = new AbortController();
+	const EXPECTED_STATUS = 400; // Bad Request for invalid email
+	try {
+		const userInvalidEmail = { ...SUCESS_USER, email: InvalidID };
 
-// 		const res = await requestEnpointRegisterUser(userInvalid);
+		const res = await requestEnpointRegisterUser(
+			userInvalidEmail,
+			abortController
+		);
 
-// 		assertEquals(
-// 			res.status,
-// 			EXPECTED_STATUS,
-// 			failedStatus(EXPECTED_STATUS, res.status)
-// 		);
-// 	} catch (err) {
-// 		fail(err);
-// 	}
-// });
+		assertEquals(res.status, EXPECTED_STATUS, 'user not created');
+	} catch (err) {
+		abortController.abort();
+		fail(failedStatus(EXPECTED_STATUS, err.code));
+	}
+});
 
-// it('{ Invalid Email } - [ Register Failded ]', async () => {
-// 	const EXPECTED_STATUS = 409; // Conflict
-// 	try {
-// 		const userInvalid = { ...SUCESS_USER, email: InvalidID };
-// 		const res = await requestEnpointRegisterUser(userInvalid);
-// 		assertEquals(res.status, EXPECTED_STATUS, 'user not created');
-// 		fail(failedStatus(EXPECTED_STATUS, res.status));
-// 	} catch (err) {
-// 		fail(err);
-// 	}
-// });
-
-// it('{ Invalid Password } - [ Register Failded ]', async () => {
-// 	const EXPECTED_STATUS = 409; // Conflict
-// 	try {
-// 		const userInvalid = { ...SUCESS_USER, password: InvalidPassword };
-// 		const res = await requestEnpointRegisterUser(userInvalid);
-// 		assertEquals(
-// 			res.status,
-// 			EXPECTED_STATUS,
-// 			failedStatus(EXPECTED_STATUS, res.status)
-// 		);
-// 	} catch (err) {
-// 		fail(err);
-// 	}
-// });
-
-// it('{ Invalid TagName } - [ Register Failded ]', async () => {
-// 	const EXPECTED_STATUS = 409; // Conflict
-// 	try {
-// 		const userInvalid = { ...SUCESS_USER, tagName: InvalidTagName };
-// 		const res = await requestEnpointRegisterUser(userInvalid);
-// 		assertEquals(
-// 			res.status,
-// 			EXPECTED_STATUS,
-// 			failedStatus(EXPECTED_STATUS, res.status)
-// 		);
-// 	} catch (err) {
-// 		fail(err);
-// 	}
-// });
-
-// it('test working [ success ]', () => {
-// 	assertEquals(1, 1);
-// });
-// it('test working [ failed ]', () => {
-// 	assertEquals(1, 3);
-// });
+it('{ Invalid TagName } - [ Register Failded ]', async () => {
+	const abortController = new AbortController();
+	const EXPECTED_STATUS = 400; // Bad Request for invalid tagName
+	try {
+		const userInvalidTagName = { ...SUCESS_USER, tagName: InvalidTagName };
+		const res = await requestEnpointRegisterUser(
+			userInvalidTagName,
+			abortController
+		);
+		assertEquals(
+			res.status,
+			EXPECTED_STATUS,
+			failedStatus(EXPECTED_STATUS, res.status)
+		);
+	} catch (err) {
+		abortController.abort();
+		fail(err);
+	}
+});
