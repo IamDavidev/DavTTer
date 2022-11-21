@@ -8,10 +8,12 @@ import {
 
 import { loginUserController } from '../controllers/user/loginUser.controller.ts';
 
-console.info(
-	'🚀 ~>  file: user.routes.ts ~>  line 5 ~>  REGISTER_USER_ENDPOINT',
-	REGISTER_USER_ENDPOINT
-);
+console.info('');
+console.info('Registering routes...');
+console.info('🚀 REGISTER_USER_ENDPOINT ~~>', REGISTER_USER_ENDPOINT);
+console.info('🚀 LOGIN_USER_ENDPOINT ~~>', LOGIN_USER_ENDPOINT);
+console.log('🚀 USER_ENPOINT_TEST_SERVER ~~>', '/users');
+console.info('');
 
 router
 	.post(REGISTER_USER_ENDPOINT, registerUserController)
