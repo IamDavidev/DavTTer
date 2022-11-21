@@ -2,18 +2,26 @@ import { RouterContext } from '$oak/router.ts';
 
 import { RegisterUserRequest } from '@infrastructure/interfaces/Enpoints.types.ts';
 import { userRegisterUseCase } from '@application/use-cases/registerUser.use_case.ts';
-import { logger } from '@infrastructure/clients/logger.client.ts';
-import { MissignFieldsException } from '../errors/missingFields.exception.ts';
-import { UnnecesaryFieldsException } from '../errors/unnecesaryFields.exception.ts';
+
+import { MissignFieldsException } from '@infrastructure/errors/missingFields.exception.ts';
+import { UnnecesaryFieldsException } from '@infrastructure/errors/unnecesaryFields.exception.ts';
 
 export async function registerUserController({
 	request,
 	response,
 }: RouterContext<RegisterUserRequest>) {
-	const { uuid, bio, email, name, password, profileImage, tagName } =
-		await request.body({
-			type: 'json',
-		}).value;
+	const {
+		uuid,
+		bio,
+		email,
+		name,
+		password,
+		profileImage,
+		tagName,
+		...restFields
+	} = await request.body({
+		type: 'json',
+	}).value;
 
 	// missign fields
 	if (
@@ -28,7 +36,7 @@ export async function registerUserController({
 		throw new MissignFieldsException();
 
 	// unnecesary fields
-	if (Object.keys(request.body).length > 7)
+	if (Object.keys(restFields).length !== 0)
 		throw new UnnecesaryFieldsException();
 
 	await userRegisterUseCase({
