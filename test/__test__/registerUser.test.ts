@@ -10,18 +10,22 @@ import { failedStatus } from '../utils/failedStatus.util.ts';
 import { requestEnpointRegisterUser } from '../utils/requestRegisterUser.util.ts';
 import { getRandomEmail } from '../services/getRandomEmail.service.ts';
 import { getRandomUUId } from '../services/getRandomUUId.service.ts';
+import { getRandomUser } from '../services/getRandomUser.service.ts';
 
-// it('[Register-Succesfully] Should be create a user in bd', async () => {
-// 	const EXPECTED_STATUS = 201; // Created
-// 	const abortController = new AbortController();
-// 	try {
-// 		const res = await requestEnpointRegisterUser(SUCESS_USER, abortController);
-// 		assertEquals(res.status, EXPECTED_STATUS);
-// 	} catch (_err) {
-// 		abortController.abort();
-// 		fail(failedStatus(409, 201));
-// 	}
-// });
+it('[Register-Succesfully] Should be create a user in bd', async () => {
+	const EXPECTED_STATUS = 201; // Created
+	const abortController = new AbortController();
+	try {
+		const res = await requestEnpointRegisterUser(
+			getRandomUser(),
+			abortController
+		);
+		assertEquals(res.status, EXPECTED_STATUS);
+	} catch (_err) {
+		abortController.abort();
+		fail(failedStatus(409, 201));
+	}
+});
 
 it('Duplicate UUId', async () => {
 	const abortController: AbortController = new AbortController();
