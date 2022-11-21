@@ -7,6 +7,6 @@
 		"@prisma/": "./generated/client/deno/",
 		"$oak/": "https://deno.land/x/oak@v11.1.0/",
 		"$testing/": "https://deno.land/std@0.161.0/testing/",
-		"$uuid": "https://deno.land/std@0.164.0/uuid"
+		"$uuid/": "https://deno.land/std@0.164.0/uuid/"
 	}
 }

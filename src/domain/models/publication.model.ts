@@ -2,7 +2,7 @@ export default class PublicationModel {
 	/**
 	 * @param id Publication unique identifier
 	 * @param title Title of the publication
-	 * @param description Description of the publication
+	 * @param body  Description of the publication
 	 * @param image Publication image URL
 	 * @param likes Number of likes of the publication
 	 * @param user User unique identifier
