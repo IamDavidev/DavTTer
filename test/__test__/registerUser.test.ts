@@ -5,7 +5,7 @@ import {
 	InvalidID,
 	InvalidTagName,
 	SUCESS_USER,
-} from '../constants/user_register.conts.ts';
+} from '../constants/fake_user_register.conts.ts';
 import { failedStatus } from '../utils/failedStatus.util.ts';
 import { requestEnpointRegisterUser } from '../utils/requestRegisterUser.util.ts';
 import { getRandomEmail } from '../services/getRandomEmail.service.ts';
