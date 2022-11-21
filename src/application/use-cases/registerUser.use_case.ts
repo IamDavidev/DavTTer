@@ -40,6 +40,7 @@ export async function userRegisterUseCase({
 		tagName,
 		publications,
 	});
+
 	const userRepository = new UserRepository();
 
 	const existUserById = await userRepository.findUserByUUId({
