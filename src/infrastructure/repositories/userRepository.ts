@@ -15,24 +15,8 @@ export default class UserRepository {
 	}
 
 	protected adapterUserToDomain(ormUser: User): UserModel {
-		/**
-		 
-			constructor(
-			public readonly id: string,
-			public name: string,
-			public email: string,
-			public password: string,
-			public tagName: string,
-			public bio: string,
-			public profileImage: string | null,
-			public numberPublications: number,
-			public publication: PublicationModel[] | []
-			) {}
-
-     	*/
-
 		const {
-			id,
+			uuid,
 			name,
 			email,
 			password,
@@ -43,7 +27,7 @@ export default class UserRepository {
 		} = ormUser;
 
 		return new UserModel(
-			id,
+			uuid,
 			name,
 			email,
 			password,
@@ -109,7 +93,7 @@ export default class UserRepository {
 			tagName,
 		} = user;
 
-		const log = await this._orm.user.create({
+		await this._orm.user.create({
 			data: {
 				bio: bio ? bio : '',
 				email,
