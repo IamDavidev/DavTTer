@@ -1,5 +1,11 @@
 {
-	"compilerOptions": {},
+	"compilerOptions": {
+		"types": [
+			"reflect-metadata"
+		],
+		"experimentalDecorators": true,
+		"emitDecoratorMetadata": true
+	},
 	"tasks": {
 		"run::server": "npx dotenv -- deno run  -A --allow-env --allow-net --watch --config deno.json --import-map import_map.json  --unstable src/app.ts",
 		"run::tst": "npx dotenv -- deno test -A --allow-env --allow-net --config deno.json --unstable --import-map import_map.json  --trace-ops test/__test__/",

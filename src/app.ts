@@ -1,5 +1,6 @@
 import { Application } from '$oak/mod.ts';
 import { config as initDotenvConfig } from 'npm:dotenv@16.0.3';
+import 'npm:reflect-metadata@0.1.13';
 
 import { router } from '@infrastructure/clients/router.ts';
 import { errorMiddleware } from '@infrastructure/middlewares/error.middleware.ts';

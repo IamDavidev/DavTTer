@@ -1,13 +1,18 @@
+import { type PrismaClient, type User } from '@prisma/index.d.ts';
 import { prisma } from '@infrastructure/clients/prisma.client.ts';
 
 import UserModel from '@domain/models/user.model.ts';
-import { type PrismaClient, type User } from '@prisma/index.d.ts';
+
 import { type FindUserByCriteria } from '@infrastructure/interfaces/FindUserByCriteria.type.ts';
-import { UserRegister } from '../../application/use-cases/registerUser.use_case.ts';
+import { type IUserRepository } from '@infrastructure/interfaces/UserRepository.interface.ts';
+
+import { UserRegister } from '@application/interfacs/UserRegister.interface.ts';
+import { injectable } from '@shared/packages/npm/inversify.package.ts';
 
 // type FindUserModel = UserModel | null;
 
-export default class UserRepository {
+@injectable()
+export default class UserRepository implements IUserRepository {
 	private _orm: PrismaClient;
 
 	constructor() {
@@ -65,22 +70,7 @@ export default class UserRepository {
 		};
 	}
 
-	public async findUserByUUId({
-		userUUId,
-	}: {
-		userUUId: string;
-	}): FindUserByCriteria {
-		const userFound = await this._orm.user.findUnique({
-			where: {
-				uuid: userUUId,
-			},
-		});
-		if (!userFound) return null;
-
-		return this.adapterUserToDomain(userFound);
-	}
-
-	public async createUser({ user }: { user: UserModel }): Promise<void> {
+	public async create({ user }: { user: UserModel }): Promise<void> {
 		const {
 			uuid,
 			bio,
@@ -108,14 +98,14 @@ export default class UserRepository {
 		});
 	}
 
-	public async findUserByTagName({
-		tagName,
+	public async findByTagName({
+		userTagName,
 	}: {
-		tagName: string;
+		userTagName: string;
 	}): FindUserByCriteria {
 		const userFound = await this._orm.user.findUnique({
 			where: {
-				tagName,
+				tagName: userTagName,
 			},
 		});
 
@@ -124,14 +114,29 @@ export default class UserRepository {
 		return this.adapterUserToDomain(userFound);
 	}
 
-	public async findUserByEmail({
-		email,
+	public async findByUUId({
+		userUUId,
 	}: {
-		email: string;
+		userUUId: string;
 	}): FindUserByCriteria {
 		const userFound = await this._orm.user.findUnique({
 			where: {
-				email,
+				uuid: userUUId,
+			},
+		});
+		if (!userFound) return null;
+
+		return this.adapterUserToDomain(userFound);
+	}
+
+	public async findByEmail({
+		userEmail,
+	}: {
+		userEmail: string;
+	}): FindUserByCriteria {
+		const userFound = await this._orm.user.findUnique({
+			where: {
+				email: userEmail,
 			},
 		});
 		if (!userFound) return null;
