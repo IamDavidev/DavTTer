@@ -124,6 +124,7 @@ export default class UserRepository implements IUserRepository {
 				uuid: userUUId,
 			},
 		});
+		console.log(userFound);
 		if (!userFound) return null;
 
 		return this.adapterUserToDomain(userFound);

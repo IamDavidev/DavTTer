@@ -1,28 +1,41 @@
 import { compare as compareHashPassword } from 'https://deno.land/x/bcrypt@v0.4.1/mod.ts';
 
+import { inject, injectable } from '@shared/packages/npm/inversify.package.ts';
+
 import { InvalidLoginException } from '@application/errors/invalidLogin.ts';
 
-import UserRepository from '@infrastructure/repositories/userRepository.ts';
+import { repositoriesSymbols } from '@infrastructure/interfaces/repositories.symbol.ts';
+import { type IUserRepository } from '@infrastructure/interfaces/UserRepository.interface.ts';
 
-export async function loginUserUseCase({
-	email,
-	password,
-}: {
-	email: string;
-	password: string;
-}): Promise<string> {
-	const userRepository = new UserRepository();
+@injectable()
+export class LoginUserUseCase {
+	constructor(
+		@inject(repositoriesSymbols.userRepository)
+		private userRepository: IUserRepository
+	) {}
 
-	const exitingUserWithEmail = await userRepository.findUserByEmail({
+	public async execute({
 		email,
-	});
-	if (exitingUserWithEmail === null) throw new InvalidLoginException();
-
-	const isPasswordCorrect = await compareHashPassword(
 		password,
-		exitingUserWithEmail.password
-	);
-	if (isPasswordCorrect === false) throw new InvalidLoginException();
+	}: {
+		email: string;
+		password: string;
+	}) {
+		console.log('user Login...');
+		const existUserWithEmail = await this.userRepository.findByEmail({
+			userEmail: email,
+		});
+		if (existUserWithEmail === null) throw new InvalidLoginException();
+		const isPasswordValid = await compareHashPassword(
+			password,
+			existUserWithEmail.password
+		);
+		if (isPasswordValid === false) throw new InvalidLoginException();
 
-	return exitingUserWithEmail.uuid;
+		return existUserWithEmail.uuid;
+	}
+
+	public printWork() {
+		console.log('LoginUserUseCase printWork');
+	}
 }

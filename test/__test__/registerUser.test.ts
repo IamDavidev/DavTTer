@@ -21,9 +21,9 @@ it('[Register-Succesfully] Should be create a user in bd', async () => {
 			abortController
 		);
 		assertEquals(res.status, EXPECTED_STATUS);
-	} catch (_err) {
+	} catch (err) {
 		abortController.abort();
-		fail(failedStatus(409, 201));
+		fail(failedStatus(err.status, EXPECTED_STATUS));
 	}
 });
 
@@ -33,6 +33,7 @@ it('Duplicate UUId', async () => {
 	try {
 		const userDupiclateUUId = {
 			...SUCESS_USER,
+			uuid: getRandomUUId(),
 		};
 		const resonse = await requestEnpointRegisterUser(
 			userDupiclateUUId,

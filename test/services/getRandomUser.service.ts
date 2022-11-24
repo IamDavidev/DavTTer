@@ -12,7 +12,7 @@ export function getRandomUser(): UserToRegister {
 		bio: faker.lorem.sentence() + faker.lorem.sentence(),
 		name: faker.name.firstName(),
 		profileImage: faker.image.avatar(),
-		tagName: faker.internet.userName(),
+		tagName: faker.name.firstName(),
 	};
 }
 

@@ -1,56 +1,66 @@
-import { RouterContext } from '$oak/router.ts';
+import { type RouterContext } from '$oak/router.ts';
+import { inject, injectable } from '@shared/packages/npm/inversify.package.ts';
 
-import { RegisterUserRequest } from '@infrastructure/interfaces/Enpoints.types.ts';
-import { userRegisterUseCase } from '@application/use-cases/registerUser.use_case.ts';
+import { RegisterUserUseCase } from '@application/use-cases/registerUser.use_case.ts';
 
 import { MissignFieldsException } from '@infrastructure/errors/missingFields.exception.ts';
 import { UnnecesaryFieldsException } from '@infrastructure/errors/unnecesaryFields.exception.ts';
+import { RegisterUserRequest } from '@infrastructure/interfaces/Enpoints.types.ts';
+import { useCasesSymbols } from '@infrastructure/interfaces/useCases.symbol.ts';
 
-export async function registerUserController({
-	request,
-	response,
-}: RouterContext<RegisterUserRequest>) {
-	const {
-		uuid,
-		bio,
-		email,
-		name,
-		password,
-		profileImage,
-		tagName,
-		...restFields
-	} = await request.body({
-		type: 'json',
-	}).value;
+@injectable()
+export class RegisterUserController {
+	private _registerUserUseCase: RegisterUserUseCase;
+	constructor(
+		@inject(useCasesSymbols.registerUserUseCase)
+		RegisterUserUseCase: RegisterUserUseCase
+	) {
+		this._registerUserUseCase = RegisterUserUseCase;
+	}
 
-	// missign fields
-	if (
-		!uuid ||
-		!bio ||
-		!email ||
-		!name ||
-		!password ||
-		!profileImage ||
-		!tagName
-	)
-		throw new MissignFieldsException();
+	async execute({ request, response }: RouterContext<RegisterUserRequest>) {
+		const {
+			uuid,
+			bio,
+			email,
+			name,
+			password,
+			profileImage,
+			tagName,
+			...restFields
+		} = await request.body({
+			type: 'json',
+		}).value;
 
-	// unnecesary fields
-	if (Object.keys(restFields).length !== 0)
-		throw new UnnecesaryFieldsException();
+		// missign fields
+		if (
+			!uuid ||
+			!bio ||
+			!email ||
+			!name ||
+			!password ||
+			!profileImage ||
+			!tagName
+		)
+			throw new MissignFieldsException();
 
-	await userRegisterUseCase({
-		uuid,
-		bio,
-		email,
-		name,
-		numberOfPublications: 0,
-		password,
-		profileImage,
-		publications: [],
-		tagName,
-	});
+		// unnecesary fields
+		if (Object.keys(restFields).length !== 0)
+			throw new UnnecesaryFieldsException();
 
-	response.status = 201;
-	response.body = 'User created';
+		await this._registerUserUseCase.execute({
+			uuid,
+			bio,
+			email,
+			name,
+			numberOfPublications: 0,
+			password,
+			profileImage,
+			publications: [],
+			tagName,
+		});
+
+		response.status = 201;
+		response.body = 'User created';
+	}
 }

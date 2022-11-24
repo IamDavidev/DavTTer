@@ -41,7 +41,7 @@ export async function errorMiddleware(
 
 		// handler global error
 		ctx.response.status = 500;
-		logger.error('Internal Erro', err.message);
+		logger.error('Internal Error : ', err.message);
 		return (ctx.response.body = {
 			message: 'Internal server error',
 		});

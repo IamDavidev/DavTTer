@@ -4,19 +4,18 @@ import { inject, injectable } from '@shared/packages/npm/inversify.package.ts';
 import { UserEmailIsAlreadyInUseException } from '@application/errors/userEmailIsAlreadyInUse.exception.ts';
 import { UserIdIsAlreadyInUseException } from '@application/errors/userIdIsAlreadyInUse.exception.ts';
 import { UserTagNameIsAlreadyInUseException } from '@application/errors/userTagNameIsAlreadyInUse.exception.ts';
+import { type UserRegister } from '@application/interfacs/UserRegister.interface.ts';
 
-import UserRepository from '@infrastructure/repositories/userRepository.ts';
-import { type IUserRepository } from '@infrastructure/interfaces/UserRepository.interface.ts';
 import { repositoriesSymbols } from '@infrastructure/interfaces/repositories.symbol.ts';
-import { type UserRegister } from '../interfacs/UserRegister.interface.ts';
+import { type IUserRepository } from '@infrastructure/interfaces/UserRepository.interface.ts';
 
 @injectable()
-export class UserRgisterUseCase {
+export class RegisterUserUseCase {
 	private _userRepository: IUserRepository;
 	constructor(
-		@inject(repositoriesSymbols.userRepository) userRepository: IUserRepository
+		@inject(repositoriesSymbols.userRepository) UserRepository: IUserRepository
 	) {
-		this._userRepository = userRepository;
+		this._userRepository = UserRepository;
 	}
 
 	async execute({
@@ -45,18 +44,17 @@ export class UserRgisterUseCase {
 		const existUserByUUid = await this._userRepository.findByUUId({
 			userUUId: newUserModel.uuid,
 		});
-		if (existUserByUUid === null) throw new UserIdIsAlreadyInUseException();
+		if (existUserByUUid) throw new UserIdIsAlreadyInUseException();
 
 		const existUserByEmail = await this._userRepository.findByEmail({
 			userEmail: newUserModel.email,
 		});
-		if (existUserByEmail === null) throw new UserEmailIsAlreadyInUseException();
+		if (existUserByEmail) throw new UserEmailIsAlreadyInUseException();
 
 		const existUserByTagName = await this._userRepository.findByTagName({
 			userTagName: newUserModel.tagName,
 		});
-		if (existUserByTagName === null)
-			throw new UserTagNameIsAlreadyInUseException();
+		if (existUserByTagName) throw new UserTagNameIsAlreadyInUseException();
 
 		await this._userRepository.create({
 			user: newUserModel,
