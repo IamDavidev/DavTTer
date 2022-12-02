@@ -21,11 +21,11 @@ export class LoginUserUseCase {
 		email: string;
 		password: string;
 	}) {
-		console.log('user Login...');
 		const existUserWithEmail = await this.userRepository.findByEmail({
 			userEmail: email,
 		});
 		if (existUserWithEmail === null) throw new InvalidLoginException();
+
 		const isPasswordValid = await compareHashPassword(
 			password,
 			existUserWithEmail.password
@@ -33,9 +33,5 @@ export class LoginUserUseCase {
 		if (isPasswordValid === false) throw new InvalidLoginException();
 
 		return existUserWithEmail.uuid;
-	}
-
-	public printWork() {
-		console.log('LoginUserUseCase printWork');
 	}
 }
