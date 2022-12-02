@@ -1,7 +1,5 @@
-import { ValueObjectFormatException } from '@domain/errors/valueObjectFormat.exception.ts';
-
 export abstract class ValueObject<T> {
-	readonly _value: T;
+	public readonly _value: T;
 
 	constructor(value: T) {
 		this._value = value;
@@ -22,7 +20,7 @@ export abstract class ValueObject<T> {
 	 *
 	 *  @returns {string} value of the value object
 	 */
-	protected abstract assertedIsValid(): void;
+	protected abstract assertedIsValid(): void | boolean;
 
 	/**
 	 * Validaction of the value object to see if it is valid
