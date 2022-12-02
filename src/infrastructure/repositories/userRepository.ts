@@ -29,6 +29,7 @@ export default class UserRepository implements IUserRepository {
 			bio,
 			profileImage,
 			numberOfPublications,
+			publications,
 		} = ormUser;
 
 		return new UserModel(
@@ -40,7 +41,7 @@ export default class UserRepository implements IUserRepository {
 			bio,
 			profileImage,
 			numberOfPublications,
-			[]
+			publications
 		);
 	}
 
