@@ -8,6 +8,7 @@ import { type UserRegister } from '@application/interfacs/UserRegister.interface
 
 import { repositoriesSymbols } from '@infrastructure/interfaces/repositories.symbol.ts';
 import { type IUserRepository } from '@infrastructure/interfaces/UserRepository.interface.ts';
+import { userWithVOsAdapter } from '@application/adapters/UserModel.adapter.ts';
 
 @injectable()
 export class RegisterUserUseCase {
@@ -18,28 +19,10 @@ export class RegisterUserUseCase {
 		this._userRepository = UserRepository;
 	}
 
-	async execute({
-		bio,
-		email,
-		name,
-		numberOfPublications,
-		password,
-		profileImage,
-		publications,
-		tagName,
-		uuid,
-	}: UserRegister): Promise<void> {
-		const newUserModel = await UserModel.createUser({
-			bio,
-			email,
-			name,
-			numberOfPublications,
-			password,
-			profileImage,
-			publications,
-			tagName,
-			uuid,
-		});
+	async execute(userRegister: UserRegister): Promise<void> {
+		const newUserModel = UserModel.create(
+			await userWithVOsAdapter(userRegister)
+		);
 
 		const existUserByUUid = await this._userRepository.findByUUId({
 			userUUId: newUserModel.uuid,

@@ -1,11 +1,14 @@
-import { compare as compareHashPassword } from 'https://deno.land/x/bcrypt@v0.4.1/mod.ts';
-
 import { inject, injectable } from '@shared/packages/npm/inversify.package.ts';
+
+import { UUidVo } from '@domain/value_objects/uuid.vo.ts';
+import { EmailVo } from '@domain/value_objects/email.vo.ts';
+import { PasswordVo } from '@domain/value_objects/password.vo.ts';
+import { ValueObjectFormatException } from '@domain/errors/valueObjectFormat.exception.ts';
 
 import { InvalidLoginException } from '@application/errors/invalidLogin.ts';
 
-import { repositoriesSymbols } from '@infrastructure/interfaces/repositories.symbol.ts';
 import { type IUserRepository } from '@infrastructure/interfaces/UserRepository.interface.ts';
+import { repositoriesSymbols } from '@infrastructure/interfaces/repositories.symbol.ts';
 
 @injectable()
 export class LoginUserUseCase {
@@ -20,18 +23,27 @@ export class LoginUserUseCase {
 	}: {
 		email: string;
 		password: string;
-	}) {
-		const existUserWithEmail = await this.userRepository.findByEmail({
-			userEmail: email,
-		});
-		if (existUserWithEmail === null) throw new InvalidLoginException();
+	}): Promise<UUidVo> {
+		try {
+			const userEmail = new EmailVo(email);
+			const userPasswrord = await PasswordVo.create(password);
 
-		const isPasswordValid = await compareHashPassword(
-			password,
-			existUserWithEmail.password
-		);
-		if (isPasswordValid === false) throw new InvalidLoginException();
+			const existUserWithEmail = await this.userRepository.findByEmail({
+				userEmail,
+			});
+			if (existUserWithEmail === null) throw new InvalidLoginException();
 
-		return existUserWithEmail.uuid;
+			const isPasswordValid = await existUserWithEmail.comparePassword({
+				password: userPasswrord,
+			});
+
+			if (isPasswordValid === false) throw new InvalidLoginException();
+
+			return existUserWithEmail.uuid;
+		} catch (err) {
+			if (err instanceof ValueObjectFormatException)
+				throw new InvalidLoginException();
+			throw err;
+		}
 	}
 }
