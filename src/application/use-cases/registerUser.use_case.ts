@@ -1,5 +1,6 @@
-import UserModel from '@domain/models/user.model.ts';
 import { inject, injectable } from '@shared/packages/npm/inversify.package.ts';
+
+import UserModel from '@domain/models/user.model.ts';
 
 import { UserEmailIsAlreadyInUseException } from '@application/errors/userEmailIsAlreadyInUse.exception.ts';
 import { UserIdIsAlreadyInUseException } from '@application/errors/userIdIsAlreadyInUse.exception.ts';

@@ -3,5 +3,3 @@ const key: CryptoKey = await crypto.subtle.generateKey(
 	true,
 	['sign', 'verify']
 );
-
-console.log(key);

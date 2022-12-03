@@ -1,23 +1,23 @@
+import { injectable } from '@shared/packages/npm/inversify.package.ts';
 import { prisma } from '@infrastructure/clients/prisma.client.ts';
 import { type PrismaClient, type User } from '@prisma/index.d.ts';
 
 import UserModel from '@domain/models/user.model.ts';
 
+import { type IUserEntity } from '@shared/interface/User.interface.ts';
 import { type FindUserByCriteria } from '@infrastructure/interfaces/FindUserByCriteria.type.ts';
 import { type IUserRepository } from '@infrastructure/interfaces/UserRepository.interface.ts';
 
-import { UserRegister } from '@application/interfacs/UserRegister.interface.ts';
-import { injectable } from '@shared/packages/npm/inversify.package.ts';
-import { BioVo } from '../../domain/value_objects/bio.vo.ts';
-import { EmailVo } from '../../domain/value_objects/email.vo.ts';
-import { NameVo } from '../../domain/value_objects/name.vo.ts';
-import { PasswordVo } from '../../domain/value_objects/password.vo.ts';
-import { TagNameVo } from '../../domain/value_objects/tagName.vo.ts';
-import { UUidVo } from '../../domain/value_objects/uuid.vo.ts';
-import { IUserEntity } from '../../shared/interface/User.interface.ts';
+import { type UserRegister } from '@application/interfacs/UserRegister.interface.ts';
+
+import { BioVo } from '@domain/value_objects/bio.vo.ts';
+import { EmailVo } from '@domain/value_objects/email.vo.ts';
+import { NameVo } from '@domain/value_objects/name.vo.ts';
+import { PasswordVo } from '@domain/value_objects/password.vo.ts';
+import { TagNameVo } from '@domain/value_objects/tagName.vo.ts';
+import { UUidVo } from '@domain/value_objects/uuid.vo.ts';
 
 export type IOrmUserDB = User;
-// type FindUserModel = UserModel | null;
 
 @injectable()
 export default class UserRepository implements IUserRepository {
@@ -133,7 +133,6 @@ export default class UserRepository implements IUserRepository {
 				uuid: userUUId.value,
 			},
 		});
-		console.log(userFound);
 		if (!userFound) return null;
 
 		return this.adapterUserToDomain(userFound);
