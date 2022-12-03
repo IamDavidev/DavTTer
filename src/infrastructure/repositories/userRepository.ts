@@ -1,5 +1,5 @@
-import { type PrismaClient, type User } from '@prisma/index.d.ts';
 import { prisma } from '@infrastructure/clients/prisma.client.ts';
+import { type PrismaClient, type User } from '@prisma/index.d.ts';
 
 import UserModel from '@domain/models/user.model.ts';
 
@@ -8,7 +8,15 @@ import { type IUserRepository } from '@infrastructure/interfaces/UserRepository.
 
 import { UserRegister } from '@application/interfacs/UserRegister.interface.ts';
 import { injectable } from '@shared/packages/npm/inversify.package.ts';
+import { BioVo } from '../../domain/value_objects/bio.vo.ts';
+import { EmailVo } from '../../domain/value_objects/email.vo.ts';
+import { NameVo } from '../../domain/value_objects/name.vo.ts';
+import { PasswordVo } from '../../domain/value_objects/password.vo.ts';
+import { TagNameVo } from '../../domain/value_objects/tagName.vo.ts';
+import { UUidVo } from '../../domain/value_objects/uuid.vo.ts';
+import { IUserEntity } from '../../shared/interface/User.interface.ts';
 
+export type IOrmUserDB = User;
 // type FindUserModel = UserModel | null;
 
 @injectable()
@@ -19,7 +27,7 @@ export default class UserRepository implements IUserRepository {
 		this._orm = prisma;
 	}
 
-	protected adapterUserToDomain(ormUser: User): UserModel {
+	protected adapterUserToDomain(ormUser: IOrmUserDB): UserModel {
 		const {
 			uuid,
 			name,
@@ -33,19 +41,19 @@ export default class UserRepository implements IUserRepository {
 		} = ormUser;
 
 		return new UserModel(
-			uuid,
-			name,
-			email,
-			password,
-			tagName,
-			bio,
+			new UUidVo(uuid),
+			new NameVo(name),
+			new EmailVo(email),
+			new PasswordVo(password),
+			new TagNameVo(tagName),
+			new BioVo(bio || ''),
 			profileImage,
 			numberOfPublications,
 			publications
 		);
 	}
 
-	protected adapterToOrm(userDomain: UserModel): UserRegister {
+	protected adapterToOrm(userDomain: IUserEntity): UserRegister {
 		const {
 			uuid,
 			bio,
@@ -59,14 +67,14 @@ export default class UserRepository implements IUserRepository {
 		} = userDomain;
 
 		return {
-			bio: bio ? bio : '',
-			email,
-			name,
+			bio: bio ? bio._value : '',
+			email: email._value,
+			name: name._value,
 			numberOfPublications,
-			password,
+			password: password._value,
 			profileImage: profileImage ? profileImage : '',
-			tagName,
-			uuid,
+			tagName: tagName._value,
+			uuid: uuid._value,
 			publications,
 		};
 	}
@@ -86,14 +94,14 @@ export default class UserRepository implements IUserRepository {
 
 		await this._orm.user.create({
 			data: {
-				bio: bio ? bio : '',
-				email,
-				name,
+				bio: bio ? bio._value : '',
+				email: email._value,
+				name: name._value,
 				numberOfPublications,
-				password,
+				password: password._value,
 				profileImage: profileImage ? profileImage : '',
-				tagName,
-				uuid,
+				tagName: tagName._value,
+				uuid: uuid._value,
 				publications,
 			},
 		});
@@ -102,11 +110,11 @@ export default class UserRepository implements IUserRepository {
 	public async findByTagName({
 		userTagName,
 	}: {
-		userTagName: string;
+		userTagName: TagNameVo;
 	}): FindUserByCriteria {
 		const userFound = await this._orm.user.findUnique({
 			where: {
-				tagName: userTagName,
+				tagName: userTagName._value,
 			},
 		});
 
@@ -118,11 +126,11 @@ export default class UserRepository implements IUserRepository {
 	public async findByUUId({
 		userUUId,
 	}: {
-		userUUId: string;
+		userUUId: UUidVo;
 	}): FindUserByCriteria {
 		const userFound = await this._orm.user.findUnique({
 			where: {
-				uuid: userUUId,
+				uuid: userUUId._value,
 			},
 		});
 		console.log(userFound);
@@ -134,11 +142,11 @@ export default class UserRepository implements IUserRepository {
 	public async findByEmail({
 		userEmail,
 	}: {
-		userEmail: string;
+		userEmail: EmailVo;
 	}): FindUserByCriteria {
 		const userFound = await this._orm.user.findUnique({
 			where: {
-				email: userEmail,
+				email: userEmail._value,
 			},
 		});
 		if (!userFound) return null;
