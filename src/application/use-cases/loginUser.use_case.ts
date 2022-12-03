@@ -9,6 +9,7 @@ import { InvalidLoginException } from '@application/errors/invalidLogin.ts';
 
 import { type IUserRepository } from '@infrastructure/interfaces/UserRepository.interface.ts';
 import { repositoriesSymbols } from '@infrastructure/interfaces/repositories.symbol.ts';
+import { PlainPassword } from '../../domain/value_objects/plinPassword.vo.ts';
 
 @injectable()
 export class LoginUserUseCase {
@@ -26,7 +27,7 @@ export class LoginUserUseCase {
 	}): Promise<UUidVo> {
 		try {
 			const userEmail = new EmailVo(email);
-			const userPasswrord = await PasswordVo.create(password);
+			const userPasswrord = new PlainPassword(password);
 
 			const existUserWithEmail = await this.userRepository.findByEmail({
 				userEmail,
