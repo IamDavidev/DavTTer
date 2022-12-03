@@ -1,10 +1,9 @@
-import { ValueObject } from '@domain/value_objects/valueObject.ts';
-import { regexValidateBio } from '@domain/constants/regexValidate.const.ts';
 import { ValueObjectFormatException } from '@domain/errors/valueObjectFormat.exception.ts';
+import { ValueObject } from '@domain/value_objects/valueObject.ts';
 
 export class BioVo extends ValueObject<string> {
 	public equals(vo: ValueObject<string>): boolean {
-		if (this._value !== vo._value) return false;
+		if (this.value !== vo.value) return false;
 		return true;
 	}
 	protected validate(): boolean {
@@ -16,6 +15,6 @@ export class BioVo extends ValueObject<string> {
 
 	protected assertedIsValid(): void {
 		if (!this.validate())
-			throw new ValueObjectFormatException(BioVo.name, this._value);
+			throw new ValueObjectFormatException(BioVo.name, this.value);
 	}
 }

@@ -4,16 +4,16 @@ import { ValueObjectFormatException } from '../errors/valueObjectFormat.exceptio
 
 export class NameVo extends ValueObject<string> {
 	public equals(vo: ValueObject<string>): boolean {
-		if (this._value !== vo._value) return false;
+		if (this.value !== vo.value) return false;
 		return true;
 	}
 	protected validate(): boolean {
-		if (!regexValidateName.test(this._value)) return false;
+		if (!regexValidateName.test(this.value)) return false;
 		return true;
 	}
 
 	protected assertedIsValid(): void {
 		if (!this.validate())
-			throw new ValueObjectFormatException(NameVo.name, this._value);
+			throw new ValueObjectFormatException(NameVo.name, this.value);
 	}
 }

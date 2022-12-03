@@ -4,17 +4,17 @@ import { ValueObjectFormatException } from '../errors/valueObjectFormat.exceptio
 
 export class UUidVo extends ValueObject<string> {
 	public equals(vo: ValueObject<string>): boolean {
-		if (this._value !== vo._value) return false;
+		if (this.value !== vo.value) return false;
 		return true;
 	}
 
 	protected validate(): boolean {
-		if (!validateId(this._value)) return false;
+		if (!validateId(this.value)) return false;
 		return true;
 	}
 
 	protected assertedIsValid(): void {
 		if (!this.validate())
-			throw new ValueObjectFormatException(UUidVo.name, this._value);
+			throw new ValueObjectFormatException(UUidVo.name, this.value);
 	}
 }

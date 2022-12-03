@@ -13,7 +13,7 @@ export class PasswordVo extends ValueObject<string> {
 	}
 
 	public equals(vo: ValueObject<string>): boolean {
-		if (this._value !== vo._value) return false;
+		if (this.value !== vo.value) return false;
 		return true;
 	}
 

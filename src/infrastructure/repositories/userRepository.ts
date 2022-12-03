@@ -67,14 +67,14 @@ export default class UserRepository implements IUserRepository {
 		} = userDomain;
 
 		return {
-			bio: bio ? bio._value : '',
-			email: email._value,
-			name: name._value,
+			bio: bio ? bio.value : '',
+			email: email.value,
+			name: name.value,
 			numberOfPublications,
-			password: password._value,
+			password: password.value,
 			profileImage: profileImage ? profileImage : '',
-			tagName: tagName._value,
-			uuid: uuid._value,
+			tagName: tagName.value,
+			uuid: uuid.value,
 			publications,
 		};
 	}
@@ -94,14 +94,14 @@ export default class UserRepository implements IUserRepository {
 
 		await this._orm.user.create({
 			data: {
-				bio: bio ? bio._value : '',
-				email: email._value,
-				name: name._value,
+				bio: bio ? bio.value : '',
+				email: email.value,
+				name: name.value,
 				numberOfPublications,
-				password: password._value,
+				password: password.value,
 				profileImage: profileImage ? profileImage : '',
-				tagName: tagName._value,
-				uuid: uuid._value,
+				tagName: tagName.value,
+				uuid: uuid.value,
 				publications,
 			},
 		});
@@ -114,7 +114,7 @@ export default class UserRepository implements IUserRepository {
 	}): FindUserByCriteria {
 		const userFound = await this._orm.user.findUnique({
 			where: {
-				tagName: userTagName._value,
+				tagName: userTagName.value,
 			},
 		});
 
@@ -130,7 +130,7 @@ export default class UserRepository implements IUserRepository {
 	}): FindUserByCriteria {
 		const userFound = await this._orm.user.findUnique({
 			where: {
-				uuid: userUUId._value,
+				uuid: userUUId.value,
 			},
 		});
 		console.log(userFound);
@@ -146,7 +146,7 @@ export default class UserRepository implements IUserRepository {
 	}): FindUserByCriteria {
 		const userFound = await this._orm.user.findUnique({
 			where: {
-				email: userEmail._value,
+				email: userEmail.value,
 			},
 		});
 		if (!userFound) return null;

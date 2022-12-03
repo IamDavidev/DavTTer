@@ -1,18 +1,6 @@
 export abstract class ValueObject<T> {
-	public readonly _value: T;
-
-	constructor(value: T) {
-		this._value = value;
-
+	constructor(public readonly value: T) {
 		this.assertedIsValid();
-	}
-
-	get value() {
-		return this._value;
-	}
-
-	set value(_value: T) {
-		throw new Error('Value cannot be changed');
 	}
 
 	/**
