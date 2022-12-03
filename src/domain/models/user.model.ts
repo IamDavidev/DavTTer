@@ -1,12 +1,14 @@
 import { genSalt } from 'https://deno.land/x/bcrypt@v0.4.1/mod.ts';
 
+import { IUserEntity } from '@shared/interface/User.interface.ts';
+
 import { NameVo } from '@domain/value_objects/name.vo.ts';
 import { UUidVo } from '@domain/value_objects/uuid.vo.ts';
 import { EmailVo } from '@domain/value_objects/email.vo.ts';
 import { PasswordVo } from '@domain/value_objects/password.vo.ts';
 import { BioVo } from '@domain/value_objects/bio.vo.ts';
+import { PlainPassword } from '@domain/value_objects/plinPassword.vo.ts';
 import { TagNameVo } from '@domain/value_objects/tagName.vo.ts';
-import { IUserEntity } from '../../shared/interface/User.interface.ts';
 
 export const HAS_SALT_ROUNDS = genSalt(10);
 
@@ -49,7 +51,7 @@ export default class UserModel {
 		);
 	}
 
-	comparePassword({ password }: { password: PasswordVo }): Promise<boolean> {
-		return this.password.compare(password._value, this.password._value);
+	comparePassword({ password }: { password: PlainPassword }): Promise<boolean> {
+		return this.password.compare(password);
 	}
 }

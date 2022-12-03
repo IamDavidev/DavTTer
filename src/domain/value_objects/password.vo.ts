@@ -5,9 +5,10 @@ import {
 	hash as hashPassword,
 } from 'https://deno.land/x/bcrypt@v0.4.1/mod.ts';
 import { compare as compareHashPassword } from 'https://deno.land/x/bcrypt@v0.4.1/mod.ts';
+import { PlainPassword } from './plinPassword.vo.ts';
 
 export class PasswordVo extends ValueObject<string> {
-	private constructor(value: string) {
+	constructor(value: string) {
 		super(value);
 	}
 
@@ -20,9 +21,7 @@ export class PasswordVo extends ValueObject<string> {
 		return true;
 	}
 
-	protected assertedIsValid() {
-		return true;
-	}
+	protected assertedIsValid(): void {}
 
 	public static async create(password: string): Promise<PasswordVo> {
 		if (password.length < 8 || password.length > 20 || password.includes(' '))
@@ -34,11 +33,11 @@ export class PasswordVo extends ValueObject<string> {
 		return new PasswordVo(hashedPassword);
 	}
 
-	public async compare(
-		password: string,
-		hashedPassword: string
-	): Promise<boolean> {
-		const isPasswordValid = await compareHashPassword(password, hashedPassword);
+	public async compare(plainPassword: PlainPassword): Promise<boolean> {
+		const isPasswordValid = await compareHashPassword(
+			plainPassword.value,
+			this.value
+		);
 
 		return isPasswordValid;
 	}

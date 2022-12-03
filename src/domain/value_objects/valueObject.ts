@@ -20,7 +20,7 @@ export abstract class ValueObject<T> {
 	 *
 	 *  @returns {string} value of the value object
 	 */
-	protected abstract assertedIsValid(): void | boolean;
+	protected abstract assertedIsValid(): void;
 
 	/**
 	 * Validaction of the value object to see if it is valid
