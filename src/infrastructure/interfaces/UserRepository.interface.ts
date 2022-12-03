@@ -1,5 +1,9 @@
 import UserModel from '@domain/models/user.model.ts';
-import { FindUserByCriteria } from '@infrastructure/interfaces/FindUserByCriteria.type.ts';
+import { EmailVo } from '@domain/value_objects/email.vo.ts';
+import { TagNameVo } from '@domain/value_objects/tagName.vo.ts';
+import { UUidVo } from '@domain/value_objects/uuid.vo.ts';
+
+import { type FindUserByCriteria } from '@infrastructure/interfaces/FindUserByCriteria.type.ts';
 
 export interface IUserRepository {
 	/**
@@ -7,21 +11,25 @@ export interface IUserRepository {
 	 * @param userUUId id of the user
 	 * @returns UserModel
 	 */
-	findByUUId({ userUUId }: { userUUId: string }): FindUserByCriteria;
+	findByUUId({ userUUId }: { userUUId: UUidVo }): FindUserByCriteria;
 
 	/**
 	 * Find a user by criteria (tagName)
 	 * @param userTagName tag name of the user
 	 * @returns UserModel
 	 */
-	findByTagName({ userTagName }: { userTagName: string }): FindUserByCriteria;
+	findByTagName({
+		userTagName,
+	}: {
+		userTagName: TagNameVo;
+	}): FindUserByCriteria;
 
 	/**
 	 * Find a user by criteria (email)
 	 * @param email email of the user
 	 * @returns UserModel
 	 */
-	findByEmail({ userEmail }: { userEmail: string }): FindUserByCriteria;
+	findByEmail({ userEmail }: { userEmail: EmailVo }): FindUserByCriteria;
 
 	/**
 	 * Create a new user
