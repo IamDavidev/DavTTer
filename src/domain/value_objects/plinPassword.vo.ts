@@ -1,5 +1,5 @@
 import { ValueObjectFormatException } from '../errors/valueObjectFormat.exception.ts';
-import { ValueObject } from './valueObject.ts';
+import { ValueObject } from './ValueObject.ts';
 
 export class PlainPassword extends ValueObject<string> {
 	public equals(vo: ValueObject<string>): boolean {

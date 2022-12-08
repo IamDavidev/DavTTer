@@ -1,5 +1,5 @@
 import { validate as validateId } from '$uuid/v4.ts';
-import { ValueObject } from '@domain/value_objects/valueObject.ts';
+import { ValueObject } from '@domain/value_objects/ValueObject.ts';
 import { ValueObjectFormatException } from '../errors/valueObjectFormat.exception.ts';
 
 export class UUidVo extends ValueObject<string> {

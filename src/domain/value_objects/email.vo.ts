@@ -1,4 +1,4 @@
-import { ValueObject } from '@domain/value_objects/valueObject.ts';
+import { ValueObject } from '@domain/value_objects/ValueObject.ts';
 import { regexValidateEmail } from '../constants/regexValidate.const.ts';
 import { ValueObjectFormatException } from '../errors/valueObjectFormat.exception.ts';
 
