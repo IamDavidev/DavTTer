@@ -1,17 +1,15 @@
-import { UUidVo } from '../value_objects/uuid.vo.ts';
-import { ValueObject } from '@domain/value_objects/ValueObject.ts';
-import { ValueObjectFormatException } from '../errors/valueObjectFormat.exception.ts';
-import { TitleVo } from '../value_objects/title.vo.ts';
-import { BodyVo } from '../value_objects/Body.vo.ts';
-import { IntDateVo } from '../value_objects/intData.vo.ts';
-import { IntVo } from '../value_objects/int.vo.ts';
+import { BodyVo } from '@domain/value_objects/Body.vo.ts';
+import { IntVo } from '@domain/value_objects/int.vo.ts';
+import { IntDateVo } from '@domain/value_objects/intData.vo.ts';
+import { TitleVo } from '@domain/value_objects/title.vo.ts';
+import { UUidVo } from '@domain/value_objects/uuid.vo.ts';
 
 export interface IImagePublication {
 	url: string;
 	alt: string;
-	height: number;
-	width: number;
-	objectFit: 'cover' | 'contain' | 'fill' | 'none' | 'scale-down';
+	height: IntVo;
+	width: IntVo;
+	objectFit: 'cover' | 'contain' | 'fill' | 'none';
 }
 
 export interface IPublicationEntity {
@@ -22,7 +20,7 @@ export interface IPublicationEntity {
 	createdAt: IntDateVo; // create publication
 	updatedAt: IntDateVo; // update publication
 	likes: IntVo; // number of likes
-	likesByUsers: string[]; // users who liked the publication
+	likesByUsers: UUidVo[]; // users who liked the publication
 	userId: UUidVo;
 }
 
@@ -47,7 +45,7 @@ export default class PublicationModel {
 		public createdAt: IntDateVo,
 		public updatedAt: IntDateVo,
 		public likes: IntVo,
-		public likesByUsers: string[],
+		public likesByUsers: UUidVo[],
 		public userId: UUidVo
 	) {}
 
