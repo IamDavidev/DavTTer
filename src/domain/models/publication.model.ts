@@ -7,8 +7,8 @@ import { UUidVo } from '@domain/value_objects/uuid.vo.ts';
 export interface IImagePublication {
 	url: string;
 	alt: string;
-	height: IntVo;
-	width: IntVo;
+	height: number;
+	width: number;
 	objectFit: 'cover' | 'contain' | 'fill' | 'none';
 }
 

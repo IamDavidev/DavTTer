@@ -42,10 +42,10 @@ model Publication {
   uuid         String   @unique
   title        String
   body         String
-  image        Image?
+  image        Image
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
   likes        Int      @default(0)
   likesByUsers String[] @default([])
-  userId       String   @db.ObjectId
+  userId       String
 }

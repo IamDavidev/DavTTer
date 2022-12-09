@@ -1,6 +1,5 @@
 import PublicationModel from '@domain/models/publication.model.ts';
 import { UUidVo } from '@domain/value_objects/uuid.vo.ts';
-import { TitleVo } from '@domain/value_objects/title.vo.ts';
 
 export type FindPublicationByCriteria = Promise<PublicationModel | null>;
 
@@ -11,13 +10,17 @@ export interface IPublicationRepository {
 		publicationUUId: UUidVo;
 	}): FindPublicationByCriteria;
 
-	findByTitle({
-		publicationTitle,
-	}: {
-		publicationTitle: TitleVo;
-	}): FindPublicationByCriteria;
+	// findByTitle({
+	// 	publicationTitle,
+	// }: {
+	// 	publicationTitle: TitleVo;
+	// }): FindPublicationByCriteria;
 
-	findByUserUUId({ userUUId }: { userUUId: UUidVo }): PublicationModel[];
+	findByUserUUId({
+		userUUId,
+	}: {
+		userUUId: UUidVo;
+	}): Promise<PublicationModel[] | null>;
 
 	// maybe add if param includues in body or title [optional]
 }
