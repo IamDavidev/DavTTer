@@ -22,11 +22,30 @@ model User {
   publications         String[] @default([])
 }
 
+enum ObjectFit {
+  cover
+  contain
+  fill
+  none
+}
+
+type Image {
+  url       String
+  alt       String
+  height    Int
+  width     Int
+  objectFit ObjectFit
+}
+
 model Publication {
-  id     String @id @default(auto()) @map("_id") @db.ObjectId
-  title  String
-  body   String
-  image  String
-  likes  Int    @default(0)
-  userId String @db.ObjectId
+  id           String   @id @default(auto()) @map("_id") @db.ObjectId
+  uuid         String   @unique
+  title        String
+  body         String
+  image        Image?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  likes        Int      @default(0)
+  likesByUsers String[] @default([])
+  userId       String   @db.ObjectId
 }

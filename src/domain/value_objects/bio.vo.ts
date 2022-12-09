@@ -1,5 +1,5 @@
 import { ValueObjectFormatException } from '@domain/errors/valueObjectFormat.exception.ts';
-import { ValueObject } from '@domain/value_objects/valueObject.ts';
+import { ValueObject } from '@domain/value_objects/ValueObject.ts';
 
 export class BioVo extends ValueObject<string> {
 	public equals(vo: ValueObject<string>): boolean {
