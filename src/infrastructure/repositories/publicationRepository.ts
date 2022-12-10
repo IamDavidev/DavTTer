@@ -17,6 +17,7 @@ import {
 	FindPublicationByCriteria,
 	IPublicationRepository,
 } from '@infrastructure/interfaces/publicationRepository.interface.ts';
+
 import { prisma } from '@infrastructure/clients/prisma.client.ts';
 
 export type IOrmPublicationDB = Publication;
@@ -41,21 +42,66 @@ export class PublicationRepository implements IPublicationRepository {
 		this._orm = prisma;
 	}
 
+	public async create({ publication }: { publication: IPublicationEntity }) {
+		const {
+			body,
+			createdAt,
+			image,
+			likes,
+			likesByUsers,
+			title,
+			updatedAt,
+			userId,
+			uuid,
+		} = publication;
+
+		const saveLikesByUsers = likesByUsers.map(user => {
+			return user.value;
+		});
+
+		await this._orm.publication.create({
+			data: {
+				body: body.value,
+				image: image,
+				title: title.value,
+				likes: likes.value,
+				userId: userId.value,
+				uuid: uuid.value,
+				createdAt: createdAt.value,
+				updatedAt: updatedAt.value,
+				likesByUsers: saveLikesByUsers,
+			},
+		});
+	}
+
 	protected adapterPublicationToDomain(
 		ormPublication: IOrmPublicationDB
 	): PublicationModel {
-		const { body, uuid, image, likes, title, userId } = ormPublication;
-		const likesByUser = [new UUidVo(uuid)];
+		const {
+			body,
+			uuid,
+			image,
+			likes,
+			title,
+			userId,
+			likesByUsers,
+			createdAt,
+			updatedAt,
+		} = ormPublication;
+
+		const likesByUserToVo = likesByUsers.map(user => {
+			return new UUidVo(user);
+		});
 
 		return new PublicationModel(
 			new UUidVo(uuid),
 			new TitleVo(title),
 			new BodyVo(body),
 			image,
-			new IntDateVo(new Date()),
-			new IntDateVo(new Date()),
+			new IntDateVo(createdAt),
+			new IntDateVo(updatedAt),
 			new IntVo(likes),
-			likesByUser,
+			likesByUserToVo,
 			new UUidVo(userId)
 		);
 	}
@@ -86,18 +132,6 @@ export class PublicationRepository implements IPublicationRepository {
 			userId: userId.value,
 		};
 	}
-
-	// findByTitle({
-	// 	publicationTitle,
-	// }: {
-	// 	publicationTitle: TitleVo;
-	// }): FindPublicationByCriteria {
-	//   const publicationFound = this._orm.publication.findUnique({
-	//     where: {
-
-	//     }
-	//   })
-	// }
 
 	public async findByUUId({
 		publicationUUId,
