@@ -6,7 +6,10 @@
 		"@shared/": "./src/shared/",
 		"@prisma/": "./generated/client/deno/",
 		"$oak/": "https://deno.land/x/oak@v11.1.0/",
+		"$logger/": "https://deno.land/x/logger@v1.0.2/",
+		"$jwt/": "https://deno.land/x/djwt@v2.8/",
 		"$testing/": "https://deno.land/std@0.161.0/testing/",
-		"$uuid/": "https://deno.land/std@0.164.0/uuid/"
+		"$uuid/": "https://deno.land/std@0.164.0/uuid/",
+		"~inversify": "npm:inversify@6.0.1"
 	}
 }

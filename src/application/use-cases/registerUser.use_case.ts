@@ -4,12 +4,12 @@ import UserModel from '@domain/models/user.model.ts';
 
 import { UserEmailIsAlreadyInUseException } from '@application/errors/userEmailIsAlreadyInUse.exception.ts';
 import { UserIdIsAlreadyInUseException } from '@application/errors/userIdIsAlreadyInUse.exception.ts';
+import { userWithVOsAdapter } from '@application/adapters/UserModel.adapter.ts';
 import { UserTagNameIsAlreadyInUseException } from '@application/errors/userTagNameIsAlreadyInUse.exception.ts';
 import { type UserRegister } from '@application/interfacs/UserRegister.interface.ts';
 
 import { repositoriesSymbols } from '@infrastructure/interfaces/repositories.symbol.ts';
 import { type IUserRepository } from '@infrastructure/interfaces/UserRepository.interface.ts';
-import { userWithVOsAdapter } from '@application/adapters/UserModel.adapter.ts';
 
 @injectable()
 export class RegisterUserUseCase {

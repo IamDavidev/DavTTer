@@ -4,10 +4,10 @@ import PublicationModel from '@domain/models/publication.model.ts';
 
 import { publicationCreateAdapterToVOs } from '@application/adapters/publiactionModel.adapter.ts';
 import { IPublicationToCreate } from '@application/interfacs/PublicationToCreate.interface.ts';
+import { PublicationIdAlreadyExistException } from '@application/errors/publicationIdAlreadyExist.exception.ts';
 
 import { type IPublicationRepository } from '@infrastructure/interfaces/publicationRepository.interface.ts';
 import { repositoriesSymbols } from '@infrastructure/interfaces/repositories.symbol.ts';
-import { PublicationIdAlreadyExistException } from '../errors/publicationIdAlreadyExist.exception.ts';
 
 @injectable()
 export class CreatePublicationUseCase {
@@ -27,6 +27,7 @@ export class CreatePublicationUseCase {
 		});
 		if (existPublicationByUUId) throw new PublicationIdAlreadyExistException();
 
+		// create and save publication
 		await this.publicationRepository.create({
 			publication: newCreatePublication,
 		});

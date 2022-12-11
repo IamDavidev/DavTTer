@@ -1,4 +1,4 @@
-import { type IImagePublication } from '@domain/models/publication.model.ts';
+import { type IImagePublication } from '@domain/interfaces/ImagePublication.interface.ts';
 
 export interface IPublicationToCreate {
 	uuid: string;

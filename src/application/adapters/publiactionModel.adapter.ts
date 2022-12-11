@@ -1,5 +1,5 @@
+import { type IPublicationEntity } from '@domain/interfaces/PublicationEntity.interface.ts';
 import { type IPublicationToCreate } from '@application/interfacs/PublicationToCreate.interface.ts';
-import { type IPublicationEntity } from '@domain/models/publication.model.ts';
 
 import { BodyVo } from '@domain/value_objects/Body.vo.ts';
 import { IntVo } from '@domain/value_objects/int.vo.ts';
