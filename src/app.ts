@@ -28,9 +28,10 @@ async function $bootstrap(abortController: AbortController): Promise<void> {
 			signal: abortController.signal,
 		});
 	} catch (err) {
+		abortController.abort();
+		logger.error(err);
 		app.removeEventListener('listen', () => {
-			logger.error(err.message);
-			abortController.abort();
+			logger.info('Remove listener on port 8080');
 		});
 	}
 }

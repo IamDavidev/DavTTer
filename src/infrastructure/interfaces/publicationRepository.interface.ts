@@ -22,5 +22,7 @@ export interface IPublicationRepository {
 		userUUId: UUidVo;
 	}): Promise<PublicationModel[] | null>;
 
+	create({ publication }: { publication: PublicationModel }): Promise<void>;
+
 	// maybe add if param includues in body or title [optional]
 }

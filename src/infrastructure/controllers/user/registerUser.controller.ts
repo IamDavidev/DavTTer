@@ -10,13 +10,10 @@ import { useCasesSymbols } from '@infrastructure/interfaces/useCases.symbol.ts';
 
 @injectable()
 export class RegisterUserController {
-	private _registerUserUseCase: RegisterUserUseCase;
 	constructor(
 		@inject(useCasesSymbols.registerUserUseCase)
-		RegisterUserUseCase: RegisterUserUseCase
-	) {
-		this._registerUserUseCase = RegisterUserUseCase;
-	}
+		private registerUserUseCase: RegisterUserUseCase
+	) {}
 
 	async execute({ request, response }: RouterContext<RegisterUserRequest>) {
 		const {
@@ -48,7 +45,7 @@ export class RegisterUserController {
 		if (Object.keys(restFields).length !== 0)
 			throw new UnnecesaryFieldsException();
 
-		await this._registerUserUseCase.execute({
+		await this.registerUserUseCase.execute({
 			uuid,
 			bio,
 			email,

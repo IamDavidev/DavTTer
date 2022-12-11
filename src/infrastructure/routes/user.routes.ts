@@ -9,7 +9,7 @@ import container from '@infrastructure/config/inversify.config.ts';
 
 import { LoginUserController } from '@infrastructure/controllers/user/loginUser.controller.ts';
 import { controllersSymbols } from '@infrastructure/interfaces/controllers.symbol.ts';
-import { RegisterUserController } from '../controllers/user/registerUser.controller.ts';
+import { RegisterUserController } from '@infrastructure/controllers/user/registerUser.controller.ts';
 
 console.info('');
 console.info('Registering routes...');

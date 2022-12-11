@@ -42,7 +42,7 @@ export class PublicationRepository implements IPublicationRepository {
 		this._orm = prisma;
 	}
 
-	public async create({ publication }: { publication: IPublicationEntity }) {
+	public async create({ publication }: { publication: PublicationModel }) {
 		const {
 			body,
 			createdAt,
