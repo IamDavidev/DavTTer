@@ -1,17 +1,13 @@
 import { type PrismaClient, type Publication } from '@prisma/index.d.ts';
 import { injectable } from '@shared/packages/npm/inversify.package.ts';
 
-import PublicationModel, {
-	IImagePublication,
-} from '@domain/models/publication.model.ts';
+import PublicationModel from '@domain/models/publication.model.ts';
 
-import { TitleVo } from '@domain/value_objects/title.vo.ts';
 import { BodyVo } from '@domain/value_objects/Body.vo.ts';
 import { IntVo } from '@domain/value_objects/int.vo.ts';
-import { UUidVo } from '@domain/value_objects/uuid.vo.ts';
 import { IntDateVo } from '@domain/value_objects/intData.vo.ts';
-
-import { IPublicationEntity } from '@domain/models/publication.model.ts';
+import { TitleVo } from '@domain/value_objects/title.vo.ts';
+import { UUidVo } from '@domain/value_objects/uuid.vo.ts';
 
 import {
 	FindPublicationByCriteria,
@@ -19,6 +15,8 @@ import {
 } from '@infrastructure/interfaces/publicationRepository.interface.ts';
 
 import { prisma } from '@infrastructure/clients/prisma.client.ts';
+import { IImagePublication } from '@domain/interfaces/ImagePublication.interface.ts';
+import { IPublicationEntity } from '@domain/interfaces/PublicationEntity.interface.ts';
 
 export type IOrmPublicationDB = Publication;
 
@@ -40,6 +38,20 @@ export class PublicationRepository implements IPublicationRepository {
 
 	constructor() {
 		this._orm = prisma;
+	}
+
+	public async existingUserId(userUUId: UUidVo): Promise<boolean> {
+		const existingUserId = await this._orm.user.findUnique({
+			where: {
+				uuid: userUUId.value,
+			},
+		});
+		console.info(
+			'🚀 ~>  file: publicationRepository.ts:50 ~>  PublicationRepository ~>  existingUserId ~>  existingUserId',
+			existingUserId
+		);
+		if (existingUserId !== null) return true;
+		return false;
 	}
 
 	public async create({ publication }: { publication: PublicationModel }) {
@@ -140,7 +152,7 @@ export class PublicationRepository implements IPublicationRepository {
 	}): FindPublicationByCriteria {
 		const publicationFound = await this._orm.publication.findUnique({
 			where: {
-				id: publicationUUId.value,
+				uuid: publicationUUId.value,
 			},
 		});
 		if (publicationFound == null) return null;
