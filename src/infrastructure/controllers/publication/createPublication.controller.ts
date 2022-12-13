@@ -5,8 +5,6 @@ const options = {
 	cloud_name: Deno.env.get('CLOUD_NAME'),
 	api_secret: Deno.env.get('API_SECRET'),
 };
-console.log(options);
-
 cloudinaryApi.config(options);
 
 import { type RouterContext } from '$oak/router.ts';
@@ -26,8 +24,6 @@ import { useCasesSymbols } from '@infrastructure/interfaces/useCases.symbol.ts';
 import { join } from 'https://deno.land/std@0.161.0/path/mod.ts';
 import { Status } from 'https://deno.land/std@0.67.0/http/http_status.ts';
 
-console.log('joinDeno', join(Deno.cwd(), 'uploads'));
-
 @injectable()
 export class CreatePublicationController {
 	constructor(
@@ -41,12 +37,9 @@ export class CreatePublicationController {
 	}: RouterContext<CreatePublicationRequest>) {
 		const formDataReader = request.body({ type: 'form-data' }).value;
 		const formData = await formDataReader.read({
+			// resolve the file path
 			outPath: join(Deno.cwd(), 'uploads'),
 		});
-		console.info(
-			'🚀 ~>  file: createPublication.controller.ts:47 ~>  CreatePublicationController ~>  formData',
-			formData
-		);
 
 		const { title, body, userId } = formData.fields;
 
