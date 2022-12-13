@@ -2,10 +2,11 @@ import { Application } from '$oak/mod.ts';
 import { config as initDotenvConfig } from 'npm:dotenv@16.0.3';
 import 'npm:reflect-metadata@0.1.13';
 
+import { logger } from '@infrastructure/clients/logger.client.ts';
 import { router } from '@infrastructure/clients/router.ts';
 import { errorMiddleware } from '@infrastructure/middlewares/error.middleware.ts';
+import '@infrastructure/routes/publication.routes.ts';
 import '@infrastructure/routes/user.routes.ts';
-import { logger } from '@infrastructure/clients/logger.client.ts';
 
 export const app: Application = new Application();
 

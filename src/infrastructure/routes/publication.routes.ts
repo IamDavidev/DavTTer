@@ -1,13 +1,22 @@
-import { type RouterContext } from '$oak/router.ts';
+import { CREATE_PUBLICATION_ENDPOINT } from '@shared/constants/enpoitns.const.ts';
 
 import { router } from '@infrastructure/clients/router.ts';
-import { CREATE_PUBLICATION_ENDPOINT } from '@shared/constants/enpoitns.const.ts';
-import { CreatePublicationRequest } from '@infrastructure/interfaces/Enpoints.types.ts';
+import container from '@infrastructure/config/inversify.config.ts';
+import { CreatePublicationController } from '@infrastructure/controllers/publication/createPublication.controller.ts';
+import { controllersSymbols } from '@infrastructure/interfaces/controllers.symbol.ts';
 
-router.post(
-	CREATE_PUBLICATION_ENDPOINT,
-	({ request }: RouterContext<CreatePublicationRequest>) => {
-		console.info('🚀 ~>  file: publication.routes.ts:9 ~>  ctx', request);
-		console.log('hola');
-	}
+console.log('🚀 CREATE_PUBLICATION_ENDPOINT ~~>', CREATE_PUBLICATION_ENDPOINT);
+
+const createPublicationController = container.get<CreatePublicationController>(
+	controllersSymbols.createPublicationController
 );
+
+router
+	.post(
+		CREATE_PUBLICATION_ENDPOINT,
+		createPublicationController.execute.bind(createPublicationController)
+	)
+	.get('/test', ctx => {
+		ctx.response.body = 'ok';
+		ctx.response.status = 200;
+	});
