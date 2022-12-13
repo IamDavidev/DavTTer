@@ -1,6 +1,7 @@
-import { validate as validateId } from '$uuid/v4.ts';
+import { validate as validateUUId } from '$uuid/v4.ts';
+
 import { ValueObject } from '@domain/value_objects/ValueObject.ts';
-import { ValueObjectFormatException } from '../errors/valueObjectFormat.exception.ts';
+import { ValueObjectFormatException } from '@domain/errors/valueObjectFormat.exception.ts';
 
 export class UUidVo extends ValueObject<string> {
 	public equals(vo: ValueObject<string>): boolean {
@@ -9,7 +10,7 @@ export class UUidVo extends ValueObject<string> {
 	}
 
 	protected validate(): boolean {
-		if (!validateId(this.value)) return false;
+		if (!validateUUId(this.value)) return false;
 		return true;
 	}
 

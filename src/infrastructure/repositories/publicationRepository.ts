@@ -14,9 +14,10 @@ import {
 	IPublicationRepository,
 } from '@infrastructure/interfaces/publicationRepository.interface.ts';
 
-import { prisma } from '@infrastructure/clients/prisma.client.ts';
 import { IImagePublication } from '@domain/interfaces/ImagePublication.interface.ts';
 import { IPublicationEntity } from '@domain/interfaces/PublicationEntity.interface.ts';
+import { prisma } from '@infrastructure/clients/prisma.client.ts';
+import { EFormatImagePublication } from '../../domain/interfaces/FormatImagePUblication.enum.ts';
 
 export type IOrmPublicationDB = Publication;
 
@@ -32,6 +33,10 @@ export interface publicationRegister {
 	userId: string;
 }
 
+enum format {
+	png = 'png',
+}
+
 @injectable()
 export class PublicationRepository implements IPublicationRepository {
 	private _orm: PrismaClient;
@@ -40,21 +45,25 @@ export class PublicationRepository implements IPublicationRepository {
 		this._orm = prisma;
 	}
 
-	public async existingUserId(userUUId: UUidVo): Promise<boolean> {
-		const existingUserId = await this._orm.user.findUnique({
+	public async existingUserUUId(userUUId: UUidVo): Promise<boolean> {
+		const existingUserUUId = await this._orm.user.findUnique({
 			where: {
 				uuid: userUUId.value,
 			},
 		});
 		console.info(
 			'🚀 ~>  file: publicationRepository.ts:50 ~>  PublicationRepository ~>  existingUserId ~>  existingUserId',
-			existingUserId
+			existingUserUUId
 		);
-		if (existingUserId !== null) return true;
+		if (existingUserUUId !== null) return true;
 		return false;
 	}
 
 	public async create({ publication }: { publication: PublicationModel }) {
+		console.info(
+			'🚀 ~>  file: publicationRepository.ts:58 ~>  PublicationRepository ~>  create ~>  publication',
+			publication
+		);
 		const {
 			body,
 			createdAt,
@@ -63,7 +72,7 @@ export class PublicationRepository implements IPublicationRepository {
 			likesByUsers,
 			title,
 			updatedAt,
-			userId,
+			userUUId,
 			uuid,
 		} = publication;
 
@@ -77,8 +86,9 @@ export class PublicationRepository implements IPublicationRepository {
 				image: image,
 				title: title.value,
 				likes: likes.value,
-				userId: userId.value,
+				userUUId: userUUId.value,
 				uuid: uuid.value,
+				format: format.png,
 				createdAt: createdAt.value,
 				updatedAt: updatedAt.value,
 				likesByUsers: saveLikesByUsers,
@@ -95,7 +105,7 @@ export class PublicationRepository implements IPublicationRepository {
 			image,
 			likes,
 			title,
-			userId,
+			userUUId,
 			likesByUsers,
 			createdAt,
 			updatedAt,
@@ -114,7 +124,8 @@ export class PublicationRepository implements IPublicationRepository {
 			new IntDateVo(updatedAt),
 			new IntVo(likes),
 			likesByUserToVo,
-			new UUidVo(userId)
+			EFormatImagePublication.png,
+			new UUidVo(userUUId)
 		);
 	}
 
@@ -127,7 +138,7 @@ export class PublicationRepository implements IPublicationRepository {
 			image,
 			likes,
 			title,
-			userId,
+			userUUId,
 			createdAt,
 			likesByUsers,
 			updatedAt,
@@ -141,7 +152,7 @@ export class PublicationRepository implements IPublicationRepository {
 			uuid: uuid.value,
 			likesByUsers: likesByUsers,
 			updatedAt: updatedAt.value,
-			userId: userId.value,
+			userId: userUUId.value,
 		};
 	}
 
@@ -167,7 +178,7 @@ export class PublicationRepository implements IPublicationRepository {
 		// change id for userId when prisma is updated with (prisma generate --data-proxy)
 		const publicationFound = await this._orm.publication.findMany({
 			where: {
-				userId: userUUId.value,
+				userUUId: userUUId.value,
 			},
 		});
 

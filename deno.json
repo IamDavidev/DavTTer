@@ -8,8 +8,8 @@
 	"tasks": {
 		"run::server": "npx dotenv -- deno run  -A --allow-env --allow-net --watch --config deno.json --import-map import_map.json  --unstable ./src/app.ts",
 		"run::tst": "npx dotenv -- deno test -A --allow-env --allow-net --config deno.json --unstable --import-map import_map.json  --trace-ops test/__test__/",
-		"up::db": "",
-		"down::db": ""
+		"up::orm": "deno run --allow-env --allow-net --allow-read --allow-run --allow-sys --allow-ffi --allow-write --unstable npm:prisma db push",
+		"generate::orm": "deno run --allow-env --allow-net --allow-read --allow-run --allow-sys --allow-ffi --allow-write --unstable npm:prisma generate --data-proxy"
 	},
 	"fmt": {
 		"options": {

@@ -1,6 +1,7 @@
 import { inject, injectable } from '@shared/packages/npm/inversify.package.ts';
 
 import PublicationModel from '@domain/models/publication.model.ts';
+import { UUidVo } from '@domain/value_objects/uuid.vo.ts';
 
 import { publicationCreateAdapterToVOs } from '@application/adapters/publiactionModel.adapter.ts';
 import { IPublicationToCreate } from '@application/interfacs/PublicationToCreate.interface.ts';
@@ -21,7 +22,6 @@ export class CreatePublicationUseCase {
 			publicationCreateAdapterToVOs(props)
 		);
 
-		// check if publication already exist
 		const existPublicationByUUId = await this.publicationRepository.findByUUId({
 			publicationUUId: newCreatePublication.uuid,
 		});
@@ -31,5 +31,18 @@ export class CreatePublicationUseCase {
 		await this.publicationRepository.create({
 			publication: newCreatePublication,
 		});
+	}
+
+	public async verifyIfExisUserUUId({
+		userUUId,
+	}: {
+		userUUId: string;
+	}): Promise<boolean> {
+		const newUserUUId = new UUidVo(userUUId);
+		console.info(
+			'🚀 ~>  file: publicationCreate.use_case.ts:43 ~>  CreatePublicationUseCase ~>  newUserUUId',
+			newUserUUId
+		);
+		return await this.publicationRepository.existingUserUUId(newUserUUId);
 	}
 }

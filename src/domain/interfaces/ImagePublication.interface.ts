@@ -10,5 +10,5 @@ export interface IImagePublication {
 	alt: string;
 	height: number;
 	width: number;
-	objectFit: EObjetFitImage;
+	objectFit: 'cover' | 'contain' | 'fill' | 'none';
 }

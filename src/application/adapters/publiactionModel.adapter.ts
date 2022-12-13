@@ -15,7 +15,8 @@ export function publicationCreateAdapterToVOs({
 	likesByUsers,
 	title,
 	updatedAt,
-	userId,
+	userUUId,
+	format,
 	uuid,
 }: IPublicationToCreate): IPublicationEntity {
 	const likesByUsersToVo = likesByUsers.map(user => new UUidVo(user));
@@ -26,8 +27,9 @@ export function publicationCreateAdapterToVOs({
 		likes: new IntVo(likes),
 		title: new TitleVo(title),
 		updatedAt: new IntDateVo(updatedAt),
-		userId: new UUidVo(userId),
+		userUUId: new UUidVo(userUUId),
 		uuid: new UUidVo(uuid),
 		likesByUsers: likesByUsersToVo,
+		format: format,
 	};
 }

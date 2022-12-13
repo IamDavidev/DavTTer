@@ -6,6 +6,7 @@ import { IntVo } from '@domain/value_objects/int.vo.ts';
 import { IntDateVo } from '@domain/value_objects/intData.vo.ts';
 import { TitleVo } from '@domain/value_objects/title.vo.ts';
 import { UUidVo } from '@domain/value_objects/uuid.vo.ts';
+import { EFormatImagePublication } from '../interfaces/FormatImagePUblication.enum.ts';
 
 export default class PublicationModel {
 	/**
@@ -14,7 +15,7 @@ export default class PublicationModel {
 	 * @param body  Description of the publication
 	 * @param image Publication image URL
 	 * @param likes Number of likes of the publication
-	 * @param userId User unique identifier
+	 * @param userUUId User unique identifier
 	 * @param createdAt Date of creation of the publication
 	 * @param updatedAt Date of update of the publication
 	 * @param likesByUsers Array of users who liked the publication
@@ -29,7 +30,8 @@ export default class PublicationModel {
 		public updatedAt: IntDateVo,
 		public likes: IntVo,
 		public likesByUsers: UUidVo[],
-		public userId: UUidVo
+		public format: EFormatImagePublication,
+		public userUUId: UUidVo
 	) {}
 
 	static create(props: IPublicationEntity): PublicationModel {
@@ -42,7 +44,8 @@ export default class PublicationModel {
 			props.updatedAt,
 			props.likes,
 			props.likesByUsers,
-			props.userId
+			props.format,
+			props.userUUId
 		);
 	}
 }

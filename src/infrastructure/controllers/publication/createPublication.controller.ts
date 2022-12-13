@@ -23,6 +23,10 @@ import { CreatePublicationRequest } from '@infrastructure/interfaces/Enpoints.ty
 import { useCasesSymbols } from '@infrastructure/interfaces/useCases.symbol.ts';
 import { join } from 'https://deno.land/std@0.161.0/path/mod.ts';
 import { Status } from 'https://deno.land/std@0.67.0/http/http_status.ts';
+import { BodyVo } from '../../../domain/value_objects/Body.vo.ts';
+import { TitleVo } from '../../../domain/value_objects/title.vo.ts';
+import { IntDateVo } from '../../../domain/value_objects/intData.vo.ts';
+import { EFormatImagePublication } from '../../../domain/interfaces/FormatImagePUblication.enum.ts';
 
 @injectable()
 export class CreatePublicationController {
@@ -41,13 +45,30 @@ export class CreatePublicationController {
 			outPath: join(Deno.cwd(), 'uploads'),
 		});
 
-		const { title, body, userId } = formData.fields;
+		const { title, body, userUUId, uuid, ...restFields } = formData.fields;
+		const bodyParse = new BodyVo(body);
+		const titleParse = new TitleVo(title);
+		const newDate = new IntDateVo(new Date());
 
-		if (!title || !body || !userId) throw new MissignFieldsException();
+		if (!title || !body || !userUUId || !uuid)
+			throw new MissignFieldsException();
 
 		if (!formData?.files) return;
-		if (Object.keys(formData.fields).length !== 0) {
+		if (Object.keys(restFields).length !== 0) {
 			throw new UnnecesaryFieldsException();
+		}
+
+		const existingUserUUId =
+			await this.createPublicationUseCase.verifyIfExisUserUUId({
+				userUUId: userUUId,
+			});
+
+		if (existingUserUUId === false) {
+			response.status = Status.BadRequest;
+			response.body = {
+				message: 'User id not found',
+			};
+			return;
 		}
 
 		const url = formData.files[0].filename || '';
@@ -57,6 +78,10 @@ export class CreatePublicationController {
 				folder: 'davter/publications',
 			})
 			.then(res => res);
+		console.info(
+			'🚀 ~>  file: createPublication.controller.ts:84 ~>  CreatePublicationController ~>  imageData',
+			imageData
+		);
 
 		// add id -> imageData.public_id
 		// add format -> imageData.format with accept jpg, png, gif, svg, webp
@@ -75,15 +100,16 @@ export class CreatePublicationController {
 		};
 
 		await this.createPublicationUseCase.execute({
-			title,
-			body,
-			createdAt: new Date(),
-			updatedAt: new Date(),
+			title: titleParse.value,
+			body: bodyParse.value,
+			createdAt: newDate.value,
+			updatedAt: newDate.value,
 			image,
 			likes: 0,
 			likesByUsers: [],
-			userId: userId,
-			uuid: '',
+			userUUId,
+			uuid: uuid,
+			format: imageData.format as EFormatImagePublication,
 		});
 
 		response.status = Status.Created;

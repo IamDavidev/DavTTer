@@ -1,4 +1,5 @@
 import { type IImagePublication } from '@domain/interfaces/ImagePublication.interface.ts';
+import { EFormatImagePublication } from '../../domain/interfaces/FormatImagePUblication.enum.ts';
 
 export interface IPublicationToCreate {
 	uuid: string;
@@ -7,7 +8,8 @@ export interface IPublicationToCreate {
 	image: IImagePublication;
 	likes: number;
 	likesByUsers: string[];
-	userId: string;
+	userUUId: string;
+	format: EFormatImagePublication;
 	createdAt: Date;
 	updatedAt: Date;
 }

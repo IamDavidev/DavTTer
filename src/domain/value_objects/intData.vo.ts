@@ -1,6 +1,7 @@
 import { ValueObjectFormatException } from '../errors/valueObjectFormat.exception.ts';
 import { ValueObject } from './ValueObject.ts';
 
+export const TEN_MINUTES_IN_MILLISECONDS = 600000;
 export class IntDateVo extends ValueObject<Date> {
 	protected assertedIsValid(): void {
 		if (!this.validate())
@@ -8,9 +9,9 @@ export class IntDateVo extends ValueObject<Date> {
 	}
 
 	protected validate(): boolean {
-		if (this.value.getTime() < new Date().getTime()) {
-			return false;
-		}
+		const dif = Math.abs(new Date().getTime() - this.value.getTime());
+
+		if (dif > TEN_MINUTES_IN_MILLISECONDS) return false;
 		return true;
 	}
 
