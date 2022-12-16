@@ -1,5 +1,8 @@
-import { it } from '$testing/bdd.ts';
-import { fail } from 'https://deno.land/std@0.152.0/testing/asserts.ts';
+import { it } from '$testing/testing/bdd.ts';
+import { Logger } from 'https://deno.land/std@0.168.0/log/logger.ts';
+const logger = new Logger('publication_create_test_ts', 'ERROR');
+
+logger.info('publication create test');
 const formData = new FormData();
 
 it('create publication test ', async () => {
@@ -10,17 +13,12 @@ it('create publication test ', async () => {
 			method: 'POST',
 			body: JSON.stringify({
 				title: 'title',
-				body: 'body',
 			}),
 			signal: abortController.signal,
 		});
-		console.info(
-			'🚀 ~>  file: publicationCreate.test.ts:18 ~>  it ~>  res',
-			res
-		);
 		await res.text();
 	} catch (err) {
 		abortController.abort();
-		fail(err);
+		logger.error(err);
 	}
 });

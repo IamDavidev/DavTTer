@@ -1,4 +1,4 @@
-import { genSalt } from 'https://deno.land/x/bcrypt@v0.4.1/mod.ts';
+import { genSalt } from '$bcrypt/mod.ts';
 
 import { IUserEntity } from '@shared/interface/User.interface.ts';
 

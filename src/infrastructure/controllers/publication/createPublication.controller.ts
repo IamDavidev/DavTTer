@@ -1,15 +1,11 @@
-import { v2 as cloudinaryApi } from 'npm:cloudinary@1.32.0';
-
-const options = {
-	api_key: Deno.env.get('API_KEY'),
-	cloud_name: Deno.env.get('CLOUD_NAME'),
-	api_secret: Deno.env.get('API_SECRET'),
-};
-cloudinaryApi.config(options);
-
 import { type RouterContext } from '$oak/router.ts';
 import { inject, injectable } from '@shared/packages/npm/inversify.package.ts';
+import { v2 as cloudinaryApi } from 'npm:cloudinary@1.32.0';
+import { join } from '$path/mod.ts';
+import { Status } from '$http/http_status.ts';
 
+import { EFormatImagePublication } from '@domain/interfaces/FormatImagePUblication.enum.ts';
+import { IntDateVo } from '@domain/value_objects/intData.vo.ts';
 import {
 	EObjetFitImage,
 	type IImagePublication,
@@ -21,10 +17,14 @@ import { MissignFieldsException } from '@infrastructure/errors/missingFields.exc
 import { UnnecesaryFieldsException } from '@infrastructure/errors/unnecesaryFields.exception.ts';
 import { CreatePublicationRequest } from '@infrastructure/interfaces/Enpoints.types.ts';
 import { useCasesSymbols } from '@infrastructure/interfaces/useCases.symbol.ts';
-import { join } from 'https://deno.land/std@0.161.0/path/mod.ts';
-import { Status } from 'https://deno.land/std@0.67.0/http/http_status.ts';
-import { EFormatImagePublication } from '@domain/interfaces/FormatImagePUblication.enum.ts';
-import { IntDateVo } from '@domain/value_objects/intData.vo.ts';
+
+const options = {
+	api_key: Deno.env.get('API_KEY'),
+	cloud_name: Deno.env.get('CLOUD_NAME'),
+	api_secret: Deno.env.get('API_SECRET'),
+};
+
+cloudinaryApi.config(options);
 
 @injectable()
 export class CreatePublicationController {
@@ -39,7 +39,6 @@ export class CreatePublicationController {
 	}: RouterContext<CreatePublicationRequest>) {
 		const formDataReader = request.body({ type: 'form-data' }).value;
 		const formData = await formDataReader.read({
-			// resolve the file path
 			outPath: join(Deno.cwd(), 'uploads'),
 		});
 
@@ -74,10 +73,6 @@ export class CreatePublicationController {
 				folder: 'davter/publications',
 			})
 			.then(res => res);
-		console.info(
-			'🚀 ~>  file: createPublication.controller.ts:84 ~>  CreatePublicationController ~>  imageData',
-			imageData
-		);
 
 		const objectFit =
 			imageData.height > imageData.width

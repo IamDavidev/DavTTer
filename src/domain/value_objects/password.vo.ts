@@ -1,11 +1,8 @@
 import { ValueObject } from '@domain/value_objects/ValueObject.ts';
 import { ValueObjectFormatException } from '@domain/errors/valueObjectFormat.exception.ts';
-import {
-	genSalt,
-	hash as hashPassword,
-} from 'https://deno.land/x/bcrypt@v0.4.1/mod.ts';
-import { compare as compareHashPassword } from 'https://deno.land/x/bcrypt@v0.4.1/mod.ts';
-import { PlainPassword } from './plinPassword.vo.ts';
+import { genSalt, hash as hashPassword } from '$bcrypt/mod.ts';
+import { compare as compareHashPassword } from '$bcrypt/mod.ts';
+import { PlainPassword } from '@domain/value_objects/plinPassword.vo.ts';
 
 export class PasswordVo extends ValueObject<string> {
 	constructor(value: string) {
