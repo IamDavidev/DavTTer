@@ -16,6 +16,8 @@ import { RegisterUserController } from '@infrastructure/controllers/user/registe
 import { controllersSymbols } from '@infrastructure/interfaces/controllers.symbol.ts';
 import { CreatePublicationUseCase } from '@application/use-cases/publicationCreate.use_case.ts';
 import { CreatePublicationController } from '@infrastructure/controllers/publication/createPublication.controller.ts';
+import { GetUserProfileUseCase } from '@application/use-cases/getUserProfile.use_case.ts';
+import { GetUserProfileController } from '@infrastructure/controllers/user/getUserProfile.controller.ts';
 
 const container = new Container();
 
@@ -33,6 +35,9 @@ container
 container
 	.bind<RegisterUserUseCase>(useCasesSymbols.registerUserUseCase)
 	.to(RegisterUserUseCase);
+container
+	.bind<GetUserProfileUseCase>(useCasesSymbols.getUserProfileUseCase)
+	.to(GetUserProfileUseCase);
 
 // controllers
 container
@@ -41,6 +46,9 @@ container
 container
 	.bind<RegisterUserController>(controllersSymbols.registerUserController)
 	.to(RegisterUserController);
+container
+	.bind<GetUserProfileController>(controllersSymbols.getUserProfileController)
+	.to(GetUserProfileController);
 
 //#endregion
 

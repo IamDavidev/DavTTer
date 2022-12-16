@@ -5,7 +5,7 @@ import { LoginUserUseCase } from '@application/use-cases/loginUser.use_case.ts';
 
 import { MissignFieldsException } from '@infrastructure/errors/missingFields.exception.ts';
 import { UnnecesaryFieldsException } from '@infrastructure/errors/unnecesaryFields.exception.ts';
-import { LoginUserRequest } from '@infrastructure/interfaces/Enpoints.types.ts';
+import { RouteLoginUser } from '@infrastructure/interfaces/Enpoints.types.ts';
 import { useCasesSymbols } from '@infrastructure/interfaces/useCases.symbol.ts';
 import { getJWT } from '@infrastructure/services/getJWT.service.ts';
 
@@ -16,7 +16,7 @@ export class LoginUserController {
 		private loginUserUseCase: LoginUserUseCase
 	) {}
 
-	async execute({ request, response }: RouterContext<LoginUserRequest>) {
+	async execute({ request, response }: RouterContext<RouteLoginUser>) {
 		const { email, password, ...restFields } = await request.body({
 			type: 'json',
 		}).value;

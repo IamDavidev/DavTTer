@@ -34,7 +34,7 @@ export default class UserModel {
 		public bio: BioVo,
 		public profileImage: string | null,
 		public numberOfPublications: number,
-		public publications: string[] | []
+		public publications: UUidVo[] | []
 	) {}
 
 	public static create(user: IUserEntity): UserModel {

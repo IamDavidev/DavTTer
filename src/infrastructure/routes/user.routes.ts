@@ -1,6 +1,7 @@
 import { router } from '@infrastructure/clients/router.ts';
 
 import {
+	GET_USER_PROFILE_ENDPOINT,
 	LOGIN_USER_ENDPOINT,
 	REGISTER_USER_ENDPOINT,
 } from '@shared/constants/enpoitns.const.ts';
@@ -10,6 +11,7 @@ import container from '@infrastructure/config/inversify.config.ts';
 import { LoginUserController } from '@infrastructure/controllers/user/loginUser.controller.ts';
 import { controllersSymbols } from '@infrastructure/interfaces/controllers.symbol.ts';
 import { RegisterUserController } from '@infrastructure/controllers/user/registerUser.controller.ts';
+import { GetUserProfileController } from '../controllers/user/getUserProfile.controller.ts';
 
 console.info('');
 console.info('Registering routes...');
@@ -25,6 +27,9 @@ const loginUserController = container.get<LoginUserController>(
 const registerUserController = container.get<RegisterUserController>(
 	controllersSymbols.registerUserController
 );
+const getUserProfileController = container.get<GetUserProfileController>(
+	controllersSymbols.getUserProfileController
+);
 
 router
 	.post(
@@ -35,6 +40,7 @@ router
 		LOGIN_USER_ENDPOINT,
 		loginUserController.execute.bind(loginUserController)
 	)
-	.get('/users', ctx => {
-		ctx.response.body = 'users';
-	});
+	.get(
+		GET_USER_PROFILE_ENDPOINT,
+		getUserProfileController.execute.bind(getUserProfileController)
+	);

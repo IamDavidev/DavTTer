@@ -5,7 +5,7 @@ import { RegisterUserUseCase } from '@application/use-cases/registerUser.use_cas
 
 import { MissignFieldsException } from '@infrastructure/errors/missingFields.exception.ts';
 import { UnnecesaryFieldsException } from '@infrastructure/errors/unnecesaryFields.exception.ts';
-import { RegisterUserRequest } from '@infrastructure/interfaces/Enpoints.types.ts';
+import { RouteRegisterUser } from '@infrastructure/interfaces/Enpoints.types.ts';
 import { useCasesSymbols } from '@infrastructure/interfaces/useCases.symbol.ts';
 
 @injectable()
@@ -15,7 +15,7 @@ export class RegisterUserController {
 		private registerUserUseCase: RegisterUserUseCase
 	) {}
 
-	async execute({ request, response }: RouterContext<RegisterUserRequest>) {
+	async execute({ request, response }: RouterContext<RouteRegisterUser>) {
 		const {
 			uuid,
 			bio,

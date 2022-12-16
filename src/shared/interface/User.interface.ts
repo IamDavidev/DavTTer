@@ -14,5 +14,5 @@ export interface IUserEntity {
 	bio: BioVo;
 	profileImage: string | null;
 	numberOfPublications: number;
-	publications: string[] | [];
+	publications: UUidVo[] | [];
 }

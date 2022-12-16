@@ -37,4 +37,6 @@ export interface IUserRepository {
 	 * @returns void
 	 */
 	create({ user }: { user: UserModel }): Promise<void>;
+
+	// update(user: UserModel): Promise<void>;
 }
