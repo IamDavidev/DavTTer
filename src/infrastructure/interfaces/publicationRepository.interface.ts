@@ -24,7 +24,7 @@ export interface IPublicationRepository {
 
 	create({ publication }: { publication: PublicationModel }): Promise<void>;
 
-	existingUserUUId(userUUId: UUidVo): Promise<boolean>;
+	existingUserUUId({ userUUId }: { userUUId: UUidVo }): Promise<boolean>;
 
 	// maybe add if param includues in body or title [optional]
 }

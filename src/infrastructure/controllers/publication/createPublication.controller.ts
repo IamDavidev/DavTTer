@@ -23,10 +23,8 @@ import { CreatePublicationRequest } from '@infrastructure/interfaces/Enpoints.ty
 import { useCasesSymbols } from '@infrastructure/interfaces/useCases.symbol.ts';
 import { join } from 'https://deno.land/std@0.161.0/path/mod.ts';
 import { Status } from 'https://deno.land/std@0.67.0/http/http_status.ts';
-import { BodyVo } from '../../../domain/value_objects/Body.vo.ts';
-import { TitleVo } from '../../../domain/value_objects/title.vo.ts';
-import { IntDateVo } from '../../../domain/value_objects/intData.vo.ts';
-import { EFormatImagePublication } from '../../../domain/interfaces/FormatImagePUblication.enum.ts';
+import { EFormatImagePublication } from '@domain/interfaces/FormatImagePUblication.enum.ts';
+import { IntDateVo } from '@domain/value_objects/intData.vo.ts';
 
 @injectable()
 export class CreatePublicationController {
@@ -46,29 +44,27 @@ export class CreatePublicationController {
 		});
 
 		const { title, body, userUUId, uuid, ...restFields } = formData.fields;
-		const bodyParse = new BodyVo(body);
-		const titleParse = new TitleVo(title);
 		const newDate = new IntDateVo(new Date());
 
+		const isValidFieldsToUploadImage =
+			await this.createPublicationUseCase.preValidateFields({
+				body,
+				title,
+				userUUId,
+			});
+		if (isValidFieldsToUploadImage) {
+			response.status = Status.BadRequest;
+			response.body = {
+				message: 'Missing fields',
+			};
+			return;
+		}
 		if (!title || !body || !userUUId || !uuid)
 			throw new MissignFieldsException();
 
 		if (!formData?.files) return;
 		if (Object.keys(restFields).length !== 0) {
 			throw new UnnecesaryFieldsException();
-		}
-
-		const existingUserUUId =
-			await this.createPublicationUseCase.verifyIfExisUserUUId({
-				userUUId: userUUId,
-			});
-
-		if (existingUserUUId === false) {
-			response.status = Status.BadRequest;
-			response.body = {
-				message: 'User id not found',
-			};
-			return;
 		}
 
 		const url = formData.files[0].filename || '';
@@ -82,9 +78,6 @@ export class CreatePublicationController {
 			'🚀 ~>  file: createPublication.controller.ts:84 ~>  CreatePublicationController ~>  imageData',
 			imageData
 		);
-
-		// add id -> imageData.public_id
-		// add format -> imageData.format with accept jpg, png, gif, svg, webp
 
 		const objectFit =
 			imageData.height > imageData.width
@@ -100,8 +93,8 @@ export class CreatePublicationController {
 		};
 
 		await this.createPublicationUseCase.execute({
-			title: titleParse.value,
-			body: bodyParse.value,
+			title,
+			body,
 			createdAt: newDate.value,
 			updatedAt: newDate.value,
 			image,

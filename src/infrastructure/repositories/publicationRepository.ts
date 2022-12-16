@@ -45,7 +45,11 @@ export class PublicationRepository implements IPublicationRepository {
 		this._orm = prisma;
 	}
 
-	public async existingUserUUId(userUUId: UUidVo): Promise<boolean> {
+	public async existingUserUUId({
+		userUUId,
+	}: {
+		userUUId: UUidVo;
+	}): Promise<boolean> {
 		const existingUserUUId = await this._orm.user.findUnique({
 			where: {
 				uuid: userUUId.value,

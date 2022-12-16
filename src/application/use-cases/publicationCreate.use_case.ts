@@ -9,6 +9,8 @@ import { PublicationIdAlreadyExistException } from '@application/errors/publicat
 
 import { type IPublicationRepository } from '@infrastructure/interfaces/publicationRepository.interface.ts';
 import { repositoriesSymbols } from '@infrastructure/interfaces/repositories.symbol.ts';
+import { TitleVo } from '../../domain/value_objects/title.vo.ts';
+import { BodyVo } from '../../domain/value_objects/Body.vo.ts';
 
 @injectable()
 export class CreatePublicationUseCase {
@@ -33,16 +35,27 @@ export class CreatePublicationUseCase {
 		});
 	}
 
-	public async verifyIfExisUserUUId({
+	public async preValidateFields({
+		title,
+		body,
 		userUUId,
 	}: {
+		title: string;
+		body: string;
 		userUUId: string;
 	}): Promise<boolean> {
-		const newUserUUId = new UUidVo(userUUId);
-		console.info(
-			'🚀 ~>  file: publicationCreate.use_case.ts:43 ~>  CreatePublicationUseCase ~>  newUserUUId',
-			newUserUUId
-		);
-		return await this.publicationRepository.existingUserUUId(newUserUUId);
+		const newTitle = new TitleVo(title);
+		const newBody = new BodyVo(body);
+		const userUUIdVO = new UUidVo(userUUId);
+		const existingUserUUId = await this.publicationRepository.existingUserUUId({
+			userUUId: userUUIdVO,
+		});
+
+		if (!existingUserUUId) return false;
+		if (!newTitle.value) return false;
+		if (!newBody.value) return false;
+		// if (!newUserUUId.value) return false;
+
+		return true;
 	}
 }
