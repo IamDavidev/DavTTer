@@ -9,8 +9,8 @@ import { PublicationIdAlreadyExistException } from '@application/errors/publicat
 
 import { type IPublicationRepository } from '@infrastructure/interfaces/publicationRepository.interface.ts';
 import { repositoriesSymbols } from '@infrastructure/interfaces/repositories.symbol.ts';
-import { TitleVo } from '../../domain/value_objects/title.vo.ts';
-import { BodyVo } from '../../domain/value_objects/Body.vo.ts';
+import { TitleVo } from '@domain/value_objects/title.vo.ts';
+import { BodyVo } from '@domain/value_objects/Body.vo.ts';
 
 @injectable()
 export class CreatePublicationUseCase {

@@ -3,4 +3,5 @@ export const useCasesSymbols = {
 	registerUserUseCase: Symbol.for('RegisterUserUseCase'),
 	createPublicationUseCase: Symbol.for('CreatePublicationUseCase'),
 	getUserProfileUseCase: Symbol.for('GetUserProfileUseCase'),
+	updatedUser: Symbol.for('UpdateUserUseCase'),
 };

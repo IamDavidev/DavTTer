@@ -16,6 +16,7 @@ import { NameVo } from '@domain/value_objects/name.vo.ts';
 import { PasswordVo } from '@domain/value_objects/password.vo.ts';
 import { TagNameVo } from '@domain/value_objects/tagName.vo.ts';
 import { UUidVo } from '@domain/value_objects/uuid.vo.ts';
+import { ValuesUpdated } from '../interfaces/valuesUpdated.interface.ts';
 
 export type IOrmUserDB = User;
 
@@ -40,6 +41,10 @@ export default class UserRepository implements IUserRepository {
 			publications,
 		} = ormUser;
 
+		const publicationVOs = publications.map(publicationUUId => {
+			return new UUidVo(publicationUUId);
+		});
+
 		return new UserModel(
 			new UUidVo(uuid),
 			new NameVo(name),
@@ -49,7 +54,7 @@ export default class UserRepository implements IUserRepository {
 			new BioVo(bio || ''),
 			profileImage,
 			numberOfPublications,
-			publications
+			publicationVOs
 		);
 	}
 
@@ -79,6 +84,34 @@ export default class UserRepository implements IUserRepository {
 		};
 	}
 
+	// deno-lint-ignore require-await
+	public async update({
+		userUUId,
+		valuesUpdated,
+	}: {
+		userUUId: UUidVo;
+		valuesUpdated: ValuesUpdated;
+	}): Promise<void> {
+		console.info(
+			'🚀 ~>  file: userRepository.ts:90 ~>  UserRepository ~>  userUUId',
+			userUUId
+		);
+		console.info(
+			'🚀 ~>  file: userRepository.ts:90 ~>  UserRepository ~>  valuesUpdated',
+			valuesUpdated
+		);
+		// const newUser = await this._orm.user.update({
+		// 	where: {
+		// 		uuid: userUUId.value,
+		// 	},
+		// 	data: {
+		// 		name: '',
+		// 	},
+		// });
+
+		return Promise.resolve();
+	}
+
 	public async create({ user }: { user: UserModel }): Promise<void> {
 		const {
 			uuid,
@@ -91,6 +124,9 @@ export default class UserRepository implements IUserRepository {
 			publications,
 			tagName,
 		} = user;
+		const publicationsValues = publications.map(publication => {
+			return publication.value;
+		});
 
 		await this._orm.user.create({
 			data: {
@@ -102,7 +138,7 @@ export default class UserRepository implements IUserRepository {
 				profileImage: profileImage ? profileImage : '',
 				tagName: tagName.value,
 				uuid: uuid.value,
-				publications,
+				publications: publicationsValues,
 			},
 		});
 	}

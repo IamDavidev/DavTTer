@@ -18,6 +18,7 @@ import { CreatePublicationUseCase } from '@application/use-cases/publicationCrea
 import { CreatePublicationController } from '@infrastructure/controllers/publication/createPublication.controller.ts';
 import { GetUserProfileUseCase } from '@application/use-cases/getUserProfile.use_case.ts';
 import { GetUserProfileController } from '@infrastructure/controllers/user/getUserProfile.controller.ts';
+import { UpdateUserUseCase } from '../../application/use-cases/updateUser.use_case.ts';
 
 const container = new Container();
 
@@ -38,6 +39,9 @@ container
 container
 	.bind<GetUserProfileUseCase>(useCasesSymbols.getUserProfileUseCase)
 	.to(GetUserProfileUseCase);
+container
+	.bind<UpdateUserUseCase>(useCasesSymbols.updatedUser)
+	.to(UpdateUserUseCase);
 
 // controllers
 container

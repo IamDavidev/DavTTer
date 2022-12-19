@@ -4,6 +4,7 @@ import { TagNameVo } from '@domain/value_objects/tagName.vo.ts';
 import { UUidVo } from '@domain/value_objects/uuid.vo.ts';
 
 import { type FindUserByCriteria } from '@infrastructure/interfaces/FindUserByCriteria.type.ts';
+import { ValuesUpdated } from '@infrastructure/interfaces/valuesUpdated.interface.ts';
 
 export interface IUserRepository {
 	/**
@@ -38,5 +39,11 @@ export interface IUserRepository {
 	 */
 	create({ user }: { user: UserModel }): Promise<void>;
 
-	// update(user: UserModel): Promise<void>;
+	update({
+		userUUId,
+		valuesUpdated,
+	}: {
+		userUUId: UUidVo;
+		valuesUpdated: ValuesUpdated;
+	}): Promise<void>;
 }
