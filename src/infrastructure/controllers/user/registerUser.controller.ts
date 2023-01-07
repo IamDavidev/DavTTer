@@ -1,12 +1,15 @@
+import { type BodyJson } from '$oak/body.ts';
 import { type RouterContext } from '$oak/router.ts';
 import { inject, injectable } from '@shared/packages/npm/inversify.package.ts';
 
 import { RegisterUserUseCase } from '@application/use-cases/registerUser.use_case.ts';
 
+import { type UserController } from '@infrastructure/interfaces/UserController.type.ts';
 import { MissignFieldsException } from '@infrastructure/errors/missingFields.exception.ts';
 import { UnnecesaryFieldsException } from '@infrastructure/errors/unnecesaryFields.exception.ts';
 import { RouteRegisterUser } from '@infrastructure/interfaces/Enpoints.types.ts';
 import { useCasesSymbols } from '@infrastructure/interfaces/useCases.symbol.ts';
+import { typeBody } from '@infrastructure/interfaces/typeBody.enum.ts';
 
 @injectable()
 export class RegisterUserController {
@@ -15,7 +18,14 @@ export class RegisterUserController {
 		private registerUserUseCase: RegisterUserUseCase
 	) {}
 
-	async execute({ request, response }: RouterContext<RouteRegisterUser>) {
+	async execute({
+		request,
+		response,
+	}: RouterContext<RouteRegisterUser>): UserController {
+		const rawBody = request.body({
+			type: typeBody.JSON,
+		}) as BodyJson;
+
 		const {
 			uuid,
 			bio,
@@ -25,9 +35,7 @@ export class RegisterUserController {
 			profileImage,
 			tagName,
 			...restFields
-		} = await request.body({
-			type: 'json',
-		}).value;
+		} = await rawBody.value;
 
 		// missign fields
 		if (

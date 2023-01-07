@@ -15,7 +15,7 @@ import { type CreatePublicationUseCase } from '@application/use-cases/publicatio
 
 import { MissignFieldsException } from '@infrastructure/errors/missingFields.exception.ts';
 import { UnnecesaryFieldsException } from '@infrastructure/errors/unnecesaryFields.exception.ts';
-import { CreatePublicationRequest } from '@infrastructure/interfaces/Enpoints.types.ts';
+import { RouteCreatePublication } from '@infrastructure/interfaces/Enpoints.types.ts';
 import { useCasesSymbols } from '@infrastructure/interfaces/useCases.symbol.ts';
 
 const options = {
@@ -36,7 +36,7 @@ export class CreatePublicationController {
 	public async execute({
 		request,
 		response,
-	}: RouterContext<CreatePublicationRequest>) {
+	}: RouterContext<RouteCreatePublication>) {
 		const formDataReader = request.body({ type: 'form-data' }).value;
 		const formData = await formDataReader.read({
 			outPath: join(Deno.cwd(), 'uploads'),
