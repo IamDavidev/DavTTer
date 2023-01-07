@@ -2,6 +2,10 @@
  <img src="/static/DavTTer_Header.png" alt="header davtter ddd" width="1080"/>
 </div>
 
+## About Project 📖
+
+DavTTer is a project created with Deno and TypeScript, with implementation of SOLID, DDD and TDD methodologies.
+On this project I used the Prisma ORM, the Inversify Dependency Injection and the OAK Framework.
 
 ## Packages 📦
 
