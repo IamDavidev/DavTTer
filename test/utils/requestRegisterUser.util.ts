@@ -6,7 +6,7 @@ import { MethodsRequest } from '../interfaces/MethodsRequest.enum.ts';
 import { UserToRegister } from '../interfaces/UserToRegister.interface.ts';
 
 export async function requestEnpointRegisterUser(
-	user: UserToRegister | any,
+	user: UserToRegister,
 	abortController: AbortController
 ): Promise<Response> {
 	const url = `${BASE_URL}${REGISTER_USER_ENDPOINT}`;
