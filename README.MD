@@ -1,71 +1,44 @@
-# Backend type Twitter
+# [Path]: # (README.MD)
 
-## in this Project used
+## Packages 📦
 
-### Deno
+- ❄ Prisma ORM (Object Relational Mapper)
+- ❄ OAK Framework (REST API)
+- ❄ Inversify (Dependency Injection)
+- ❄ Typescript (Language)
+- ❄ Deno (Runtime)
+- ❄ MongoDB (Database)
+- ❄ PodMan (Containerization)
+- ❄ POO (Methodology)
+- ❄ SOLID (Methodology)
+- ❄ TDD (Methodology)
+- ❄ DDD (Methodology)
+- ❄ Git (Version Control)
+- ❄ Github (Version Control)
 
-> [Runtime of JavaScript and TypeScript](https://deno.land/)
+## How to run 🏃‍♂️
 
-### TypeScript
+### you need
 
-> [TypeScript is a superset of JavaScript that compiles to clean JavaScript output.](https://www.typescriptlang.org/)
+- [Deno](https://deno.land/)
+- [NPM](https://www.npmjs.com/)
 
-### Oak
-
-> [Middleware Framework for Deno's net server](https://github.com/oakserver/oak)
-
-### Deno Deploy
-
-> { No Implemented } [Serverless platform for Deno](https://deno.com/deploy)
-
-### Prisma
-
-> [ORM](https://www.prisma.io/)
-
-### MongoDB
-
-> [NoSQL Database](https://www.mongodb.com/)
-
-### Podman
-
-> [Container Engine](https://podman.io/)
-
-### inversify
-
-> [Dependency Injection](https://inversify.io/)
-
-### POO
-
-> Object Oriented Programming
-
-### TDD
-
-> Test Driven Development
-
-### Pattern Repository
-
-### Hexagonal Architecture
-
-## How to use
-
-### 1. Clone the project
-
-### 2. Install the dependencies
+1. ⚡ Clone the repository
 
 ```bash
-npm install dotenv
+gh repo clone IamDavidev/DavTTer
 ```
 
-### 3. Set the environment variables
+2. ⚡ Install the dependencies
 
-### Run the project
+```bash
+npm install dotenv-cli
+```
+
+3. ⚡ Add the environment variables
+
+4. ⚡ run the project
 
 ```bash
 deno task run::server
-```
-
-### Run the tests
-
-```bash
-deno task run::tst
 ```
