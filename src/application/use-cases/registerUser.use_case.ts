@@ -21,7 +21,7 @@ export class RegisterUserUseCase {
 	}
 
 	async execute(userRegister: UserRegister): Promise<void> {
-		const newUserModel = UserModel.create(
+		const newUserModel: UserModel = UserModel.create(
 			await userWithVOsAdapter(userRegister)
 		);
 

@@ -14,9 +14,9 @@ export class GetUserProfileUseCase {
 	) {}
 
 	async execute({ userUUId }: { userUUId: UUidVo }): Promise<UserModel> {
-		const userDB = await this.userRepository.findByUUId({
+		const userDB = (await this.userRepository.findByUUId({
 			userUUId,
-		});
+		})) as UserModel | null;
 
 		if (userDB === null) throw new UserNotExistException();
 

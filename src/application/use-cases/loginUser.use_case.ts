@@ -9,6 +9,7 @@ import { InvalidLoginException } from '@application/errors/invalidLogin.ts';
 
 import { repositoriesSymbols } from '@infrastructure/interfaces/repositories.symbol.ts';
 import { type IUserRepository } from '@infrastructure/interfaces/UserRepository.interface.ts';
+import UserModel from '../../domain/models/user.model.ts';
 
 @injectable()
 export class LoginUserUseCase {
@@ -28,14 +29,17 @@ export class LoginUserUseCase {
 			const userEmail = new EmailVo(email);
 			const userPasswrord = new PlainPassword(password);
 
-			const existUserWithEmail = await this.userRepository.findByEmail({
+			const existUserWithEmail = (await this.userRepository.findByEmail({
 				userEmail,
-			});
+			})) as UserModel | null;
+
 			if (existUserWithEmail === null) throw new InvalidLoginException();
 
-			const isPasswordValid = await existUserWithEmail.comparePassword({
-				password: userPasswrord,
-			});
+			const isPasswordValid: boolean = await existUserWithEmail.comparePassword(
+				{
+					password: userPasswrord,
+				}
+			);
 
 			if (isPasswordValid === false) throw new InvalidLoginException();
 

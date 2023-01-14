@@ -20,13 +20,15 @@ export class CreatePublicationUseCase {
 	) {}
 
 	public async execute(props: IPublicationToCreate): Promise<void> {
-		const newCreatePublication = PublicationModel.create(
+		const newCreatePublication: PublicationModel = PublicationModel.create(
 			publicationCreateAdapterToVOs(props)
 		);
 
-		const existPublicationByUUId = await this.publicationRepository.findByUUId({
-			publicationUUId: newCreatePublication.uuid,
-		});
+		const existPublicationByUUId: PublicationModel | null =
+			await this.publicationRepository.findByUUId({
+				publicationUUId: newCreatePublication.uuid,
+			});
+
 		if (existPublicationByUUId) throw new PublicationIdAlreadyExistException();
 
 		// create and save publication
@@ -47,9 +49,11 @@ export class CreatePublicationUseCase {
 		const newTitle = new TitleVo(title);
 		const newBody = new BodyVo(body);
 		const userUUIdVO = new UUidVo(userUUId);
-		const existingUserUUId = await this.publicationRepository.existingUserUUId({
-			userUUId: userUUIdVO,
-		});
+
+		const existingUserUUId: boolean =
+			await this.publicationRepository.existingUserUUId({
+				userUUId: userUUIdVO,
+			});
 
 		if (!existingUserUUId) return false;
 		if (!newTitle.value) return false;
